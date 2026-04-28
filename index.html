@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investicija – Inputs + Summary (MVP)</title>
+  style.css
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div>
+        <h1>Investicija – Inputs + Summary (MVP)</h1>
+        <p class="sub">
+          Web verzija prvog koraka iz <span class="pill">Inputs</span> → <span class="pill">Summary</span> modela.
+        </p>
+      </div>
+      <div class="header-actions">
+        <button id="btnReset" class="btn btn-secondary" type="button">Reset na Excel default</button>
+        <button id="btnCalc" class="btn btn-primary" type="button">Izračunaj</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>📌 Osnovni parametri</h2>
+        <div class="form-grid">
+          <label>
+            Start datum
+            <input id="startDate" type="date" />
+          </label>
+
+          <label>
+            Model (broj meseci)
+            <input id="modelMonths" type="number" min="1" step="1" />
+          </label>
+
+          <label>
+            Meseci gradnje
+            <input id="constructionMonths" type="number" min="1" step="1" />
+          </label>
+
+          <label>
+            Meseci prodaje
+            <input id="salesMonths" type="number" min="1" step="1" />
+          </label>
+
+          <label>
+            Prodajna površina (m²)
+            <input id="sellableArea" type="number" min="1" step="1" />
+          </label>
+
+          <label>
+            Cena prodaje (€/m²)
+            <input id="salePricePerSqm" type="number" min="0" step="10" />
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>🏗️ Troškovi</h2>
+        <div class="form-grid">
+          <label>
+            Cena gradnje (€/m²)
+            <input id="constructionCostPerSqm" type="number" min="0" step="10" />
+          </label>
+
+          <label>
+            Soft cost %
+            <input id="softCostPct" type="number" min="0" step="0.01" />
+          </label>
+
+          <label>
+            Neplanirano (rezerva) %
+            <input id="contingencyPct" type="number" min="0" step="0.01" />
+          </label>
+
+          <label>
+            Kupovina zemljišta (EUR)
+            <input id="landCost" type="number" min="0" step="1000" />
+          </label>
+
+          <label>
+            Dozvole i komunalije (EUR)
+            <input id="permitsCost" type="number" min="0" step="500" />
+          </label>
+
+          <label>
+            Marketing % od prihoda
+            <input id="marketingPct" type="number" min="0" step="0.005" />
+          </label>
+
+          <label>
+            Dodatna rezerva (EUR)
+            <input id="otherReserve" type="number" min="0" step="1000" />
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>🏦 Finansiranje</h2>
+        <div class="form-grid">
+          <label>
+            Sopstveni kapital (Equity) (EUR)
+            <input id="equity" type="number" min="0" step="1000" />
+          </label>
+
+          <label>
+            Kamatna stopa (godišnje, npr. 0.075)
+            <input id="interestRateAnnual" type="number" min="0" step="0.001" />
+          </label>
+
+          <label>
+            Bankarska naknada %
+            <input id="bankFeePct" type="number" min="0" step="0.001" />
+          </label>
+
+          <label>
+            Limit za obračun bank. naknade (EUR)
+            <input id="bankFeeBaseLimit" type="number" min="0" step="1000" />
+          </label>
+
+          <label>
+            Porez na dobit %
+            <input id="corporateTaxPct" type="number" min="0" step="0.01" />
+          </label>
+        </div>
+        <p class="hint">
+          Mapiranje polja i prioriteti su definisani u [Investicija_App_Developer_Handover_v1.docx](https://o5-my.sharepoint.com/personal/nikola_babic_bilfinger_com/_layouts/15/Doc.aspx?sourcedoc=%7BA3A0CBC7-A59E-4EB0-8B0D-D5905F094E7B%7D&file=Investicija_App_Developer_Handover_v1.docx&action=default&mobileredirect=true&EntityRepresentationId=f2401506-0c72-4886-9942-6cc408cb4d42). [3](https://o5.sharepoint.com/teams/0700100-010w-t-software-deployment-nl/_layouts/15/Doc.aspx?sourcedoc=%7BC4480CBC-FC55-4C83-A9BA-2BD1302268F9%7D&file=Snow%20export%20List.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1)[4](https://o5-my.sharepoint.com/personal/nikola_babic_bilfinger_com/_layouts/15/Doc.aspx?sourcedoc=%7BA3A0CBC7-A59E-4EB0-8B0D-D5905F094E7B%7D&file=Investicija_App_Developer_Handover_v1.docx&action=default&mobileredirect=true&DefaultItemOpen=1)
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>📊 Summary (rezultati)</h2>
+
+        <div class="results">
+          <div class="kpi">
+            <span class="k">Ukupan prihod</span>
+            <span class="v" id="kpiRevenue">—</span>
+          </div>
+          <div class="kpi">
+            <span class="k">Troškovi (bez kamate)</span>
+            <span class="v" id="kpiCostsNoInterest">—</span>
+          </div>
+          <div class="kpi">
+            <span class="k">Ukupna kamata (sim.)</span>
+            <span class="v" id="kpiInterest">—</span>
+          </div>
+          <div class="kpi">
+            <span class="k">Peak kredit (sim.)</span>
+            <span class="v" id="kpiPeakCredit">—</span>
+          </div>
+          <div class="kpi">
+            <span class="k">Porez (sim.)</span>
+            <span class="v" id="kpiTax">—</span>
+          </div>
+          <div class="kpi">
+            <span class="k">Neto dobit (posle poreza)</span>
+            <span class="v" id="kpiNetProfit">—</span>
+          </div>
+          <div class="kpi">
+            <span class="k">ROI (na equity)</span>
+            <span class="v" id="kpiRoi">—</span>
+          </div>
+          <div class="kpi">
+            <span class="k">Break-even cena (€/m²) (sim.)</span>
+            <span class="v" id="kpiBePrice">—</span>
+          </div>
+        </div>
+
+        <details class="ref">
+          <summary>📌 Excel referenca (iz [investicija_PEP_Risk.xlsx](https://o5-my.sharepoint.com/personal/nikola_babic_bilfinger_com/_layouts/15/Doc.aspx?sourcedoc=%7B9CCC1577-B339-40EE-B123-122692371EC9%7D&file=investicija_PEP_Risk.xlsx&action=default&mobileredirect=true&EntityRepresentationId=eb3837c5-443e-45f8-8c99-2d106a700a80))</summary>
+          <div class="ref-grid">
+            <div><b>Revenue:</b> 1,190,000 EUR</div>
+            <div><b>Total costs (no interest):</b> 683,470.80 EUR</div>
+            <div><b>Total interest:</b> 53,883.90 EUR</div>
+            <div><b>Peak credit:</b> 587,354.70 EUR</div>
+            <div><b>Cash end (post-tax):</b> -45,264.53 EUR</div>
+            <div><b>Net profit (post-tax):</b> -195,264.53 EUR</div>
+            <div><b>ROI:</b> -1.30176353</div>
+            <div><b>Break-even price:</b> 1,529.65766 €/m²</div>
+          </div>
+          <p class="hint">
+            Ove vrednosti su iz sheeta “Mapa/Summary” u [investicija_PEP_Risk.xlsx](https://o5-my.sharepoint.com/personal/nikola_babic_bilfinger_com/_layouts/15/Doc.aspx?sourcedoc=%7B9CCC1577-B339-40EE-B123-122692371EC9%7D&file=investicija_PEP_Risk.xlsx&action=default&mobileredirect=true&EntityRepresentationId=eb3837c5-443e-45f8-8c99-2d106a700a80). [1](https://o5.sharepoint.com/sites/0001000_020T_BilfingerProducts/_layouts/15/Doc.aspx?sourcedoc=%7B9474CA94-CE25-4523-A96E-3EDC06A17DC7%7D&file=Processes%20Bilfinger%20ISP%20and%20IT%20heatmap.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1)
+          </p>
+        </details>
+
+        <div class="footer-note" id="noteBox"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>✅ MVP: statički sajt (GitHub Pages). Sledeće: CashFlow tabela + grafikon + PEP/Risk.</span>
+    </footer>
+  </div>
+
+  app.jsscript>
+</body>
+</html>
