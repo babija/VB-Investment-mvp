@@ -1,6 +1,6 @@
 :root{
   --bg:#050505;
-  --card:rgba(18,18,18,.9);
+  --card:rgba(18,18,18,.92);
   --text:#f5f2eb;
   --muted:#b9a37a;
 
@@ -11,7 +11,7 @@
   --warn:#e6b800;
   --bad:#e05555;
 
-  --radius:16px;
+  --radius:14px;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
@@ -19,27 +19,40 @@
 
 /* ================= BASE ================= */
 
+html, body{
+  height:100%;
+}
+
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
   background:
-    radial-gradient(900px 600px at 15% 10%, rgba(212,175,55,.10), transparent 60%),
-    radial-gradient(900px 600px at 85% 35%, rgba(212,175,55,.07), transparent 60%),
+    radial-gradient(800px 500px at 15% 10%, rgba(212,175,55,.08), transparent 60%),
+    radial-gradient(800px 500px at 85% 35%, rgba(212,175,55,.05), transparent 60%),
     var(--bg);
   color:var(--text);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
 }
 
+/* ================= APP ================= */
+
 .app{
-  max-width:200mm;        /* ✅ A4 feel na webu */
-  margin:0 auto;
-  padding:18mm 16mm;      /* ✅ kao margine dokumenta */
+  width:100%;
+  max-width:1100px;
+  max-height:92vh;
+  padding:14px 18px;
   position:relative;
-}
-``
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
 /* ================= WATERMARK ================= */
-/* Vidljiv, ali ne remeti čitanje */
 
 .app::after{
   content:"VB";
@@ -50,31 +63,30 @@ body{
   justify-content:center;
 
   font-family:serif;
-  font-size:280px;
+  font-size:240px;
   font-weight:800;
   letter-spacing:-14px;
 
   color:#d4af37;
-  opacity:0.055;
+  opacity:0.045;
   mix-blend-mode:multiply;
 
   pointer-events:none;
-  z-index:2;
+  z-index:1;
 }
 
-/* sav sadržaj iznad watermarka */
 .app > *{
   position:relative;
-  z-index:3;
+  z-index:2;
 }
 
 /* ================= HEADER ================= */
 
 .header{
   display:flex;
-  justify-content:space-between;
+  flex-direction:column;
   align-items:center;
-  padding:14px 10px 10px;
+  gap:8px;
 }
 
 .header-left{
@@ -83,58 +95,64 @@ body{
   gap:16px;
 }
 
+/* LOGO – veći, ali kontrolisan */
 .logo{
-  height:80px;                   /* ✅ veći logo na sajtu */
+  height:72px;
   width:auto;
   filter:
-    drop-shadow(0 2px 10px rgba(212,175,55,.35))
-    drop-shadow(0 0 18px rgba(212,175,55,.15));
+    drop-shadow(0 2px 8px rgba(212,175,55,.35))
+    drop-shadow(0 0 14px rgba(212,175,55,.18));
 }
 
 .header-text h1{
   margin:0;
-  font-size:23px;
-  letter-spacing:.2px;
+  font-size:20px;
 }
 
 .sub{
-  margin-top:4px;
+  margin-top:2px;
   color:var(--muted);
-  font-size:13px;
-}
-
-.pill{
-  padding:2px 9px;
-  border:1px solid var(--border);
-  border-radius:999px;
   font-size:12px;
 }
 
-/* ================= GOLD DIVIDER ================= */
+.pill{
+  padding:1px 8px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  font-size:11px;
+}
+
+/* DUGMAD CENTRIRANA */
+.header-actions{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+
+/* ================= DIVIDER ================= */
 
 .gold-divider{
   height:1px;
-  margin:10px auto 18px;
-  max-width:1040px;
   background:linear-gradient(
     to right,
     transparent,
     var(--accent),
     transparent
   );
-  opacity:.85;
+  opacity:.8;
 }
 
 /* ================= BUTTONS ================= */
 
 .btn{
-  border-radius:12px;
-  padding:8px 16px;
+  border-radius:10px;
+  padding:6px 14px;
   font-weight:600;
-  cursor:pointer;
+  font-size:12px;
   border:1px solid var(--border);
   background:transparent;
   color:var(--text);
+  cursor:pointer;
 }
 
 .btn-primary{
@@ -145,9 +163,11 @@ body{
 /* ================= GRID ================= */
 
 .grid{
+  flex:1;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:14px;
+  gap:10px;
+  overflow:hidden;
 }
 
 /* ================= CARDS ================= */
@@ -156,13 +176,12 @@ body{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:var(--radius);
-  padding:14px 14px 16px;
+  padding:10px 10px 12px;
 }
 
 .card h2{
-  margin:0 0 10px;
-  font-size:15px;
-  letter-spacing:.2px;
+  margin:0 0 6px;
+  font-size:13.5px;
 }
 
 .summary-card{
@@ -174,26 +193,27 @@ body{
 .form-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:7px 12px;
+  gap:6px 8px;
 }
 
 .form-grid.single-line{
-  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
 }
 
 label{
   display:flex;
   flex-direction:column;
-  gap:4px;
-  font-size:12px;
+  gap:2px;
+  font-size:11px;
   color:var(--muted);
 }
 
 input{
-  background:rgba(255,255,255,.07);
+  background:rgba(255,255,255,.06);
   border:1px solid var(--border);
-  border-radius:10px;
-  padding:8px 9px;
+  border-radius:8px;
+  padding:5px 7px;
+  font-size:11.5px;
   color:var(--text);
 }
 
@@ -207,27 +227,20 @@ input:focus{
 .results{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px 12px;
+  gap:6px 8px;
 }
 
 .kpi{
   display:flex;
   justify-content:space-between;
-  align-items:baseline;
   border:1px solid var(--border);
-  border-radius:12px;
-  padding:8px 11px;
+  border-radius:10px;
+  padding:5px 8px;
+  font-size:11.5px;
 }
 
-.k{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.v{
-  font-family:var(--mono);
-  font-size:13px;
-}
+.k{color:var(--muted)}
+.v{font-family:var(--mono)}
 
 .kpi.good{border-color:var(--good);color:var(--good)}
 .kpi.warn{border-color:var(--warn);color:var(--warn)}
@@ -236,98 +249,40 @@ input:focus{
 /* ================= ASSUMPTIONS ================= */
 
 .assumptions{
-  margin-top:10px;
-  font-size:12px;
+  margin-top:6px;
+  font-size:11px;
   color:var(--muted);
 }
 
 /* ================= FOOTER ================= */
 
 .footer{
-  margin-top:20px;
-  font-size:12px;
+  font-size:11px;
   color:var(--muted);
-}
-
-/* ================= COVER (PDF) ================= */
-
-.cover{
-  display:none;
   text-align:center;
-  padding-top:140px;
 }
 
-.cover img{
-  width:170px;
-  margin-bottom:42px;
-
-  /* ✅ FEJDOVANE IVICE */
-  opacity:.65;
-  filter:
-    grayscale(100%)
-    contrast(95%)
-    brightness(108%)
-    blur(.3px);
-}
-
-.cover h1{font-size:34px}
-.cover h2{margin-top:8px;font-size:18px;color:#666}
-.cover-meta{margin-top:44px;font-size:14px}
-
-/* ================= PRINT / PDF ================= */
+/* ================= PDF ================= */
 
 @media print{
-
   body{
-    background:#fff !important;
-    color:#000 !important;
-  }
-
-  .no-print,
-  .header-actions{
-    display:none !important;
-  }
-
-  .cover{
-    display:block !important;
-    page-break-after:always;
-  }
-
-  .grid{
     display:block;
-  }
-
-  .card{
-    break-inside:avoid;
-    page-break-inside:avoid;
-    background:#fff !important;
-    color:#000 !important;
-    border:1px solid #d4af37 !important;
-    margin-bottom:12px;
-  }
-
-  .kpi{
-    border:1px solid #ccc !important;
-  }
-
-  input{
-    border:1px solid #ccc !important;
-    color:#000 !important;
-  }
-
-  .app::after{
-    opacity:0.08 !important;
-  }
-
-  @page{
-    margin:18mm;
+    overflow:visible;
   }
 }
 
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:900px){
-  .grid{grid-template-columns:1fr}
-  .results{grid-template-columns:1fr}
+  body{
+    overflow:auto;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .results{
+    grid-template-columns:1fr;
+  }
 }
-``
