@@ -1,5 +1,5 @@
 // VB Invest Calc Lite – MVP
-// Početna strana prazna, NEMA reset-a na Excel default
+// Početna strana prazna, nema reset-a, PDF export (print)
 
 const DEFAULTS = {
   startDate: "2027-01-04",
@@ -36,6 +36,7 @@ function money(x) {
     maximumFractionDigits: 2,
   }).format(x);
 }
+
 function num(x, d = 4) {
   if (!Number.isFinite(x)) return "—";
   return x.toFixed(d);
@@ -57,8 +58,10 @@ function readInputs() {
   for (const k of Object.keys(DEFAULTS)) {
     const n = el(k);
     if (!n) continue;
-    if (n.type === "date") obj[k] = n.value;
-    else {
+
+    if (n.type === "date") {
+      obj[k] = n.value;
+    } else {
       let v = Number(n.value);
       if (isPctField(k)) v = v / 100;
       obj[k] = v;
@@ -168,7 +171,8 @@ function runSimulation(p) {
 function breakEvenPrice(p) {
   let lo = 0;
   let hi = Math.max(5000, p.salePricePerSqm * 3);
-  const f = (price) => runSimulation({ ...p, salePricePerSqm: price }).netProfit;
+  const f = (price) =>
+    runSimulation({ ...p, salePricePerSqm: price }).netProfit;
 
   while (f(hi) < 0) hi *= 1.5;
 
@@ -200,6 +204,11 @@ function calc() {
 
 function init() {
   el("btnCalc").onclick = calc;
+
+  const btnPdf = el("btnPdf");
+  if (btnPdf) {
+    btnPdf.onclick = () => window.print();
+  }
 }
 
 init();
