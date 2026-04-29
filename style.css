@@ -334,3 +334,62 @@ input:focus{
   }
 
 }
+/* =========================================================
+   PATCH – PDF FINAL LOGO + CLEAN SECOND PAGE
+   ========================================================= */
+
+@media print{
+
+  /* 1️⃣ Dugmad NIKAD u PDF-u (ni na jednoj strani) */
+  .header-actions{
+    display:none !important;
+  }
+
+  /* 2️⃣ Logo u headeru sakriven (PDF koristi cover logo) */
+  .logo{
+    display:none !important;
+  }
+
+  /* 3️⃣ PDF COVER – centriran layout */
+  .cover{
+    display:flex !important;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+
+  /* 4️⃣ PDF LOGO – GOLD TONE + FADE */
+  .cover img{
+    width:140px;
+    max-width:40%;
+    margin:0 auto 32px;
+
+    /* ✅ 60% transparentno */
+    opacity:0.6;
+
+    /* ✅ ZLATNI TON */
+    filter:
+      sepia(1)
+      saturate(2.4)
+      hue-rotate(-8deg)
+      brightness(1.05)
+      contrast(1.05);
+
+    /* ✅ FEJDOVANE IVICE */
+    -webkit-mask-image: radial-gradient(
+      circle,
+      rgba(0,0,0,1) 55%,
+      rgba(0,0,0,0.6) 70%,
+      rgba(0,0,0,0) 85%
+    );
+    mask-image: radial-gradient(
+      circle,
+      rgba(0,0,0,1) 55%,
+      rgba(0,0,0,0.6) 70%,
+      rgba(0,0,0,0) 85%
+    );
+  }
+
+}
+``
