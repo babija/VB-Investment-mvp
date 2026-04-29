@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VB Invest Calc Lite</title>
 
-  <link rel="stylesheet" href="style.css?v=2.0">
+  <link rel="stylesheet" href="style.css?v=3.1">
 </head>
 
 <body>
@@ -14,16 +14,15 @@
   <!-- ================= PDF COVER (PRINT ONLY) ================= -->
   <section class="cover print-only">
     <h1>VB Invest Calc Lite</h1>
-    <h2>Investment Summary</h2>
+    <h2 id="pdfProjectName">—</h2>
 
     <div class="cover-meta">
-      <p><strong>Project:</strong> ____________________________</p>
-      <p><strong>Location:</strong> __________________________</p>
+      <p><strong>Location:</strong> <span id="pdfLocation">—</span></p>
       <p><strong>Date:</strong> <span id="printDate"></span></p>
     </div>
   </section>
 
-  <!-- ================= HEADER (SCREEN ONLY) ================= -->
+  <!-- ================= HEADER ================= -->
   <header class="header no-print">
     <div>
       <h1>VB Invest Calc Lite</h1>
@@ -48,7 +47,20 @@
   <!-- ================= MAIN ================= -->
   <main class="grid">
 
-    <!-- ================= SUMMARY (FIRST) ================= -->
+    <!-- ================= PROJECT META ================= -->
+    <section class="card">
+      <h2>📝 Projekat</h2>
+      <div class="form-grid single-line">
+        <label>Ime projekta
+          <input id="projectName" type="text" placeholder="npr. VB Residence Mladenovac">
+        </label>
+        <label>Lokacija
+          <input id="projectLocation" type="text" placeholder="Mladenovac, Srbija">
+        </label>
+      </div>
+    </section>
+
+    <!-- ================= SUMMARY ================= -->
     <section class="card summary-card">
       <h2>📊 Summary</h2>
 
@@ -62,21 +74,18 @@
       </div>
 
       <div class="assumptions">
-        <h3>Key assumptions</h3>
-        <ul>
-          <li>Sale price: <span id="aSale">—</span> €/m²</li>
-          <li>Construction cost: <span id="aCost">—</span> €/m²</li>
-          <li>Interest rate: <span id="aInterest">—</span> %</li>
-          <li>Sales period: <span id="aSales">—</span> months</li>
-        </ul>
+        <strong>Key assumptions:</strong>
+        <span id="aSale">—</span> €/m² ·
+        <span id="aCost">—</span> €/m² ·
+        kamata <span id="aInterest">—</span>% ·
+        prodaja <span id="aSales">—</span> mes.
       </div>
     </section>
 
     <!-- ================= OSNOVNI PARAMETRI ================= -->
-    <section class="card">
+    <section class="card page-break">
       <h2>📌 Osnovni parametri</h2>
       <div class="form-grid">
-        <label>Start datum<input id="startDate" type="date"></label>
         <label>Model (meseci)<input id="modelMonths" type="number"></label>
         <label>Meseci gradnje<input id="constructionMonths" type="number"></label>
         <label>Meseci prodaje<input id="salesMonths" type="number"></label>
@@ -88,78 +97,37 @@
     <!-- ================= TROŠKOVI ================= -->
     <section class="card">
       <h2>🏗️ Troškovi</h2>
+
+      <div class="form-grid single-line">
+        <label>Gradnja €/m²<input id="constructionCostPerSqm" type="number"></label>
+        <label>Soft %<input id="softCostPct" type="number"></label>
+        <label>Rezerva %<input id="contingencyPct" type="number"></label>
+        <label>Marketing %<input id="marketingPct" type="number"></label>
+      </div>
+
       <div class="form-grid">
-        <label>Cena gradnje (€/m²)<input id="constructionCostPerSqm" type="number"></label>
-
-        <label class="label-with-tooltip">
-          Soft cost %
-          <span class="tooltip-icon">ⓘ
-            <span class="tooltip-text">Unesi ceo broj (npr. 12 = 12%)</span>
-          </span>
-          <input id="softCostPct" type="number">
-        </label>
-
-        <label class="label-with-tooltip">
-          Rezerva %
-          <span class="tooltip-icon">ⓘ
-            <span class="tooltip-text">Unesi ceo broj (npr. 7 = 7%)</span>
-          </span>
-          <input id="contingencyPct" type="number">
-        </label>
-
-        <label>Zemljište (EUR)<input id="landCost" type="number"></label>
-        <label>Dozvole (EUR)<input id="permitsCost" type="number"></label>
-
-        <label class="label-with-tooltip">
-          Marketing %
-          <span class="tooltip-icon">ⓘ
-            <span class="tooltip-text">Unesi ceo broj (npr. 2 = 2%)</span>
-          </span>
-          <input id="marketingPct" type="number">
-        </label>
-
-        <label>Dodatna rezerva (EUR)<input id="otherReserve" type="number"></label>
+        <label>Zemljište €<input id="landCost" type="number"></label>
+        <label>Dozvole €<input id="permitsCost" type="number"></label>
+        <label>Dodatna rezerva €<input id="otherReserve" type="number"></label>
       </div>
     </section>
 
     <!-- ================= FINANSIRANJE ================= -->
-    <section class="card">
+    <section class="card page-break">
       <h2>🏦 Finansiranje</h2>
-      <div class="form-grid">
-        <label>Equity (EUR)<input id="equity" type="number"></label>
-
-        <label class="label-with-tooltip">
-          Kamatna stopa %
-          <span class="tooltip-icon">ⓘ
-            <span class="tooltip-text">Unesi ceo broj (npr. 7.5 = 7.5%)</span>
-          </span>
-          <input id="interestRateAnnual" type="number">
-        </label>
-
-        <label class="label-with-tooltip">
-          Bank fee %
-          <span class="tooltip-icon">ⓘ
-            <span class="tooltip-text">Unesi ceo broj (npr. 1 = 1%)</span>
-          </span>
-          <input id="bankFeePct" type="number">
-        </label>
-
-        <label>Fee limit (EUR)<input id="bankFeeBaseLimit" type="number"></label>
-
-        <label class="label-with-tooltip">
-          Porez %
-          <span class="tooltip-icon">ⓘ
-            <span class="tooltip-text">Unesi ceo broj (npr. 10 = 10%)</span>
-          </span>
-          <input id="corporateTaxPct" type="number">
-        </label>
+      <div class="form-grid single-line">
+        <label>Equity €<input id="equity" type="number"></label>
+        <label>Kamata %<input id="interestRateAnnual" type="number"></label>
+        <label>Bank fee %<input id="bankFeePct" type="number"></label>
+        <label>Fee limit €<input id="bankFeeBaseLimit" type="number"></label>
+        <label>Porez %<input id="corporateTaxPct" type="number"></label>
       </div>
     </section>
 
   </main>
 
   <footer class="footer">
-    Model version v1.0 · Indicative calculation · Non‑binding
+    Model v1.1 · Indicative calculation · Non‑binding
   </footer>
 
 </div>
