@@ -1,11 +1,9 @@
-<!doctype html>
-<html lang="sr">
+<!doctype html><html lang="sr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title> VB Invest Calc Lite </title>
+  <title>VB Invest Calc Lite</title>
 
-  <!-- ✅ CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,11 +11,11 @@
   <div class="app">
     <header class="header">
       <div>
-        <h1>Investicija – Inputs + Summary (MVP)</h1>
+        <h1>VB Invest Calc Lite</h1>
         <p class="sub">
-          Web verzija prvog koraka iz
+          Brzi investicioni kalkulator –
           <span class="pill">Inputs</span> →
-          <span class="pill">Summary</span> modela.
+          <span class="pill">Summary</span>
         </p>
       </div>
       <div class="header-actions">
@@ -32,7 +30,6 @@
 
     <main class="grid">
 
-      <!-- ================= OSNOVNI PARAMETRI ================= -->
       <section class="card">
         <h2>📌 Osnovni parametri</h2>
         <div class="form-grid">
@@ -62,7 +59,6 @@
         </div>
       </section>
 
-      <!-- ================= TROŠKOVI ================= -->
       <section class="card">
         <h2>🏗️ Troškovi</h2>
         <div class="form-grid">
@@ -70,12 +66,26 @@
             <input id="constructionCostPerSqm" type="number" min="0" step="10" />
           </label>
 
-          <label>Soft cost %
-            <input id="softCostPct" type="number" min="0" step="0.01" />
+          <label class="label-with-tooltip">
+            Soft cost %
+            <span class="tooltip-icon">ⓘ
+              <span class="tooltip-text">
+                Unesi procenat kao ceo broj.<br>
+                Primer: <b>12</b> znači <b>12%</b>
+              </span>
+            </span>
+            <input id="softCostPct" type="number" min="0" step="0.1" />
           </label>
 
-          <label>Neplanirano (rezerva) %
-            <input id="contingencyPct" type="number" min="0" step="0.01" />
+          <label class="label-with-tooltip">
+            Neplanirano (rezerva) %
+            <span class="tooltip-icon">ⓘ
+              <span class="tooltip-text">
+                Unesi procenat kao ceo broj.<br>
+                Primer: <b>7</b> znači <b>7%</b>
+              </span>
+            </span>
+            <input id="contingencyPct" type="number" min="0" step="0.1" />
           </label>
 
           <label>Kupovina zemljišta (EUR)
@@ -86,8 +96,15 @@
             <input id="permitsCost" type="number" min="0" step="500" />
           </label>
 
-          <label>Marketing % od prihoda
-            <input id="marketingPct" type="number" min="0" step="0.005" />
+          <label class="label-with-tooltip">
+            Marketing % od prihoda
+            <span class="tooltip-icon">ⓘ
+              <span class="tooltip-text">
+                Unesi procenat kao ceo broj.<br>
+                Primer: <b>2</b> znači <b>2%</b>
+              </span>
+            </span>
+            <input id="marketingPct" type="number" min="0" step="0.1" />
           </label>
 
           <label>Dodatna rezerva (EUR)
@@ -96,44 +113,54 @@
         </div>
       </section>
 
-      <!-- ================= FINANSIRANJE ================= -->
       <section class="card">
         <h2>🏦 Finansiranje</h2>
         <div class="form-grid">
-          <label>Sopstveni kapital (Equity) (EUR)
+          <label>Sopstveni kapital (EUR)
             <input id="equity" type="number" min="0" step="1000" />
           </label>
 
-          <label>Kamatna stopa (godišnje, npr. 0.075)
-            <input id="interestRateAnnual" type="number" min="0" step="0.001" />
+          <label class="label-with-tooltip">
+            Kamatna stopa (godišnje) %
+            <span class="tooltip-icon">ⓘ
+              <span class="tooltip-text">
+                Unesi procenat kao ceo broj.<br>
+                Primer: <b>7.5</b> znači <b>7.5%</b>
+              </span>
+            </span>
+            <input id="interestRateAnnual" type="number" min="0" step="0.1" />
           </label>
 
-          <label>Bankarska naknada %
-            <input id="bankFeePct" type="number" min="0" step="0.001" />
+          <label class="label-with-tooltip">
+            Bankarska naknada %
+            <span class="tooltip-icon">ⓘ
+              <span class="tooltip-text">
+                Unesi procenat kao ceo broj.<br>
+                Primer: <b>1</b> znači <b>1%</b>
+              </span>
+            </span>
+            <input id="bankFeePct" type="number" min="0" step="0.1" />
           </label>
 
           <label>Limit za obračun bank. naknade (EUR)
             <input id="bankFeeBaseLimit" type="number" min="0" step="1000" />
           </label>
 
-          <label>Porez na dobit %
-            <input id="corporateTaxPct" type="number" min="0" step="0.01" />
+          <label class="label-with-tooltip">
+            Porez na dobit %
+            <span class="tooltip-icon">ⓘ
+              <span class="tooltip-text">
+                Unesi procenat kao ceo broj.<br>
+                Primer: <b>10</b> znači <b>10%</b>
+              </span>
+            </span>
+            <input id="corporateTaxPct" type="number" min="0" step="0.1" />
           </label>
         </div>
-
-        <p class="hint">
-          Mapiranje polja je definisano u
-          <a href="https://o5-my.sharepoint.com/personal/nikola_babic_bilfinger_com/_layouts/15/Doc.aspx"
-             target="_blank" rel="noopener">
-            Investicija_App_Developer_Handover_v1.docx
-          </a>
-        </p>
       </section>
 
-      <!-- ================= SUMMARY ================= -->
       <section class="card">
-        <h2>📊 Summary (rezultati)</h2>
-
+        <h2>📊 Summary</h2>
         <div class="results">
           <div class="kpi"><span class="k">Ukupan prihod</span><span class="v" id="kpiRevenue">—</span></div>
           <div class="kpi"><span class="k">Troškovi (bez kamate)</span><span class="v" id="kpiCostsNoInterest">—</span></div>
@@ -147,14 +174,14 @@
 
         <div class="footer-note" id="noteBox"></div>
       </section>
+
     </main>
 
     <footer class="footer">
-      ✅ MVP: statički sajt (GitHub Pages). Sledeće: CashFlow + grafikon + PEP/Risk.
+      ✅ VB Invest Calc Lite — MVP (GitHub Pages)
     </footer>
   </div>
 
-  <!-- ✅ JAVASCRIPT (MORA BITI NA KRAJU) -->
   <script src="app.js"></script>
 </body>
 </html>
