@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VB Invest Calc Lite</title>
 
-  <link rel="stylesheet" href="style.css?v=3.2">
+  <link rel="stylesheet" href="style.css?v=3.3">
 </head>
 
 <body>
@@ -42,12 +42,13 @@
     </div>
   </header>
 
+  <!-- ✅ ZLATNA LINIJA (VRAĆENA) -->
   <div class="gold-divider"></div>
 
   <!-- ================= MAIN ================= -->
   <main class="grid">
 
-    <!-- ================= PROJECT META ================= -->
+    <!-- ================= PROJECT ================= -->
     <section class="card">
       <h2>📝 Projekat</h2>
       <div class="form-grid single-line">
@@ -100,9 +101,9 @@
 
       <div class="form-grid single-line">
         <label>Gradnja €/m²<input id="constructionCostPerSqm" type="number"></label>
-        <label>Soft %<input id="softCostPct" type="number"></label>
-        <label>Rezerva %<input id="contingencyPct" type="number"></label>
-        <label>Marketing %<input id="marketingPct" type="number"></label>
+        <label>Soft %<input id="softCostPct" type="number" step="0.1"></label>
+        <label>Rezerva %<input id="contingencyPct" type="number" step="0.1"></label>
+        <label>Marketing %<input id="marketingPct" type="number" step="0.1"></label>
       </div>
 
       <div class="form-grid">
@@ -117,10 +118,10 @@
       <h2>🏦 Finansiranje</h2>
       <div class="form-grid single-line">
         <label>Equity €<input id="equity" type="number"></label>
-        <label>Kamata %<input id="interestRateAnnual" type="number"></label>
-        <label>Bank fee %<input id="bankFeePct" type="number"></label>
+        <label>Kamata %<input id="interestRateAnnual" type="number" step="0.1"></label>
+        <label>Bank fee %<input id="bankFeePct" type="number" step="0.1"></label>
         <label>Fee limit €<input id="bankFeeBaseLimit" type="number"></label>
-        <label>Porez %<input id="corporateTaxPct" type="number"></label>
+        <label>Porez %<input id="corporateTaxPct" type="number" step="0.1"></label>
       </div>
     </section>
 
