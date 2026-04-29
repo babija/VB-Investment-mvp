@@ -1,5 +1,5 @@
-// Investicija – Inputs + Summary MVP
-// Početna strana PRAZNA, procente korisnik unosi kao ceo broj (12 = 12%)
+// VB Invest Calc Lite – MVP
+// Početna strana prazna, NEMA reset-a na Excel default
 
 const DEFAULTS = {
   startDate: "2027-01-04",
@@ -65,15 +65,6 @@ function readInputs() {
     }
   }
   return obj;
-}
-
-function setInputs(values) {
-  for (const [k, v] of Object.entries(values)) {
-    const n = el(k);
-    if (!n) continue;
-    if (n.type === "date") n.value = v;
-    else n.value = isPctField(k) ? v * 100 : v;
-  }
 }
 
 function derivedTotals(p) {
@@ -171,15 +162,7 @@ function runSimulation(p) {
   const netProfit = profitBeforeTax - tax;
   const roi = p.equity > 0 ? netProfit / p.equity : NaN;
 
-  return {
-    ...t,
-    totalInterest,
-    peakCredit,
-    profitBeforeTax,
-    tax,
-    netProfit,
-    roi,
-  };
+  return { ...t, totalInterest, peakCredit, profitBeforeTax, tax, netProfit, roi };
 }
 
 function breakEvenPrice(p) {
@@ -217,7 +200,7 @@ function calc() {
 
 function init() {
   el("btnCalc").onclick = calc;
-  el("btnReset").onclick = () => setInputs(DEFAULTS);
 }
 
 init();
+``
