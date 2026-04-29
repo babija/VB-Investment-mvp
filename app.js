@@ -1,10 +1,6 @@
 // Investicija – Inputs + Summary MVP
-// Izvedeno po logici i mapiranju polja iz:
-// Investicija_App_Developer_Handover_v1.docx
-// investicija_PEP_Risk.xlsx
-// MVP baseline (CashFlow parity u sledećoj iteraciji)
+// Početna strana PRAZNA, procente korisnik unosi kao ceo broj (12 = 12%)
 
-// ================== DEFAULTS (EXCEL REFERENCE) ==================
 const DEFAULTS = {
   startDate: "2027-01-04",
   modelMonths: 24,
@@ -14,7 +10,6 @@ const DEFAULTS = {
   sellableArea: 476,
   salePricePerSqm: 2500,
 
-  // ⚠️ DEFAULTS OSTAJU U DECIMALAMA (EXCEL LOGIKA)
   constructionCostPerSqm: 1000,
   softCostPct: 0.12,
   contingencyPct: 0.07,
@@ -30,12 +25,9 @@ const DEFAULTS = {
   corporateTaxPct: 0.10,
 };
 
-// Prodajni raspored
 const SALES_PCTS_6 = [0.10, 0.15, 0.20, 0.20, 0.20, 0.15];
-
 const el = (id) => document.getElementById(id);
 
-// ================== FORMAT HELPERS ==================
 function money(x) {
   if (!Number.isFinite(x)) return "—";
   return new Intl.NumberFormat("sr-RS", {
@@ -44,37 +36,31 @@ function money(x) {
     maximumFractionDigits: 2,
   }).format(x);
 }
-function num(x, digits = 4) {
+function num(x, d = 4) {
   if (!Number.isFinite(x)) return "—";
-  return x.toFixed(digits);
+  return x.toFixed(d);
 }
 
-// ================== INPUT HANDLING ==================
+function isPctField(k) {
+  return [
+    "softCostPct",
+    "contingencyPct",
+    "marketingPct",
+    "interestRateAnnual",
+    "bankFeePct",
+    "corporateTaxPct",
+  ].includes(k);
+}
+
 function readInputs() {
   const obj = {};
-  const keys = Object.keys(DEFAULTS);
-
-  for (const k of keys) {
-    const node = el(k);
-    if (!node) continue;
-
-    if (node.type === "date") {
-      obj[k] = node.value;
-    } else {
-      let v = Number(node.value);
-
-      // ✅ SVA POLJA KOJA SU PROCENTI → DELI SA 100
-      if (
-        k === "softCostPct" ||
-        k === "contingencyPct" ||
-        k === "marketingPct" ||
-        k === "interestRateAnnual" ||
-        k === "bankFeePct" ||
-        k === "corporateTaxPct"
-      ) {
-        v = v / 100;
-      }
-
+  for (const k of Object.keys(DEFAULTS)) {
+    const n = el(k);
+    if (!n) continue;
+    if (n.type === "date") obj[k] = n.value;
+    else {
+      let v = Number(n.value);
+      if (isPctField(k)) v = v / 100;
       obj[k] = v;
     }
   }
@@ -83,38 +69,19 @@ function readInputs() {
 
 function setInputs(values) {
   for (const [k, v] of Object.entries(values)) {
-    const node = el(k);
-    if (!node) continue;
-
-    if (node.type === "date") {
-      node.value = v;
-    } else {
-      // ✅ kod setovanja defaulta, procente vraćamo u %
-      if (
-        k === "softCostPct" ||
-        k === "contingencyPct" ||
-        k === "marketingPct" ||
-        k === "interestRateAnnual" ||
-        k === "bankFeePct" ||
-        k === "corporateTaxPct"
-      ) {
-        node.value = v * 100;
-      } else {
-        node.value = v;
-      }
-    }
+    const n = el(k);
+    if (!n) continue;
+    if (n.type === "date") n.value = v;
+    else n.value = isPctField(k) ? v * 100 : v;
   }
 }
 
-// ================== DERIVED TOTALS ==================
 function derivedTotals(p) {
   const revenue = p.sellableArea * p.salePricePerSqm;
-
   const hard = p.sellableArea * p.constructionCostPerSqm;
   const soft = hard * p.softCostPct;
   const contingency = hard * p.contingencyPct;
   const marketing = revenue * p.marketingPct;
-
   const bankFee = p.bankFeePct * p.bankFeeBaseLimit;
 
   const costsNoInterest =
@@ -130,7 +97,6 @@ function derivedTotals(p) {
   return { revenue, hard, soft, contingency, marketing, bankFee, costsNoInterest };
 }
 
-// ================== CASHFLOW SIM ==================
 function runSimulation(p) {
   const t = derivedTotals(p);
 
@@ -213,15 +179,12 @@ function runSimulation(p) {
     tax,
     netProfit,
     roi,
-    cashEnd: cash,
   };
 }
 
-// ================== BREAK EVEN ==================
 function breakEvenPrice(p) {
   let lo = 0;
   let hi = Math.max(5000, p.salePricePerSqm * 3);
-
   const f = (price) => runSimulation({ ...p, salePricePerSqm: price }).netProfit;
 
   while (f(hi) < 0) hi *= 1.5;
@@ -234,8 +197,7 @@ function breakEvenPrice(p) {
   return (lo + hi) / 2;
 }
 
-// ================== RENDER ==================
-function render(sim, bePrice) {
+function render(sim, be) {
   el("kpiRevenue").textContent = money(sim.revenue);
   el("kpiCostsNoInterest").textContent = money(sim.costsNoInterest);
   el("kpiInterest").textContent = money(sim.totalInterest);
@@ -243,10 +205,9 @@ function render(sim, bePrice) {
   el("kpiTax").textContent = money(sim.tax);
   el("kpiNetProfit").textContent = money(sim.netProfit);
   el("kpiRoi").textContent = num(sim.roi, 6);
-  el("kpiBePrice").textContent = `${bePrice.toFixed(2)} €/m²`;
+  el("kpiBePrice").textContent = `${be.toFixed(2)} €/m²`;
 }
 
-// ================== INIT ==================
 function calc() {
   const p = readInputs();
   const sim = runSimulation(p);
@@ -255,14 +216,8 @@ function calc() {
 }
 
 function init() {
-  el("btnReset").onclick = () => {
-    setInputs(DEFAULTS);
-    calc();
-  };
   el("btnCalc").onclick = calc;
-
-  setInputs(DEFAULTS);
-  calc();
+  el("btnReset").onclick = () => setInputs(DEFAULTS);
 }
 
 init();
