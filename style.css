@@ -19,10 +19,6 @@
 
 /* ================= BASE ================= */
 
-html, body{
-  height:100%;
-}
-
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
@@ -31,25 +27,20 @@ body{
     radial-gradient(800px 500px at 85% 35%, rgba(212,175,55,.05), transparent 60%),
     var(--bg);
   color:var(--text);
+}
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
+/* ✅ PDF-only sekcije se NE VIDE na sajtu */
+.print-only{
+  display:none;
 }
 
 /* ================= APP ================= */
 
 .app{
-  width:100%;
   max-width:1100px;
-  max-height:92vh;
+  margin:0 auto;
   padding:14px 18px;
   position:relative;
-
-  display:flex;
-  flex-direction:column;
-  gap:10px;
 }
 
 /* ================= WATERMARK ================= */
@@ -92,16 +83,15 @@ body{
 .header-left{
   display:flex;
   align-items:center;
-  gap:16px;
+  gap:14px;
 }
 
-/* LOGO – veći, ali kontrolisan */
+/* ✅ LOGO – NORMALNA VELIČINA (NE POSTER) */
 .logo{
-  height:72px;
+  height:64px;
   width:auto;
   filter:
-    drop-shadow(0 2px 8px rgba(212,175,55,.35))
-    drop-shadow(0 0 14px rgba(212,175,55,.18));
+    drop-shadow(0 2px 6px rgba(212,175,55,.35));
 }
 
 .header-text h1{
@@ -122,17 +112,18 @@ body{
   font-size:11px;
 }
 
-/* DUGMAD CENTRIRANA */
+/* ✅ DUGMAD CENTRIRANA */
 .header-actions{
   display:flex;
-  justify-content:center;
   gap:10px;
+  justify-content:center;
 }
 
-/* ================= DIVIDER ================= */
+/* ================= GOLD DIVIDER ================= */
 
 .gold-divider{
   height:1px;
+  margin:8px 0 14px;
   background:linear-gradient(
     to right,
     transparent,
@@ -163,11 +154,9 @@ body{
 /* ================= GRID ================= */
 
 .grid{
-  flex:1;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
-  overflow:hidden;
 }
 
 /* ================= CARDS ================= */
@@ -257,27 +246,36 @@ input:focus{
 /* ================= FOOTER ================= */
 
 .footer{
+  margin-top:14px;
   font-size:11px;
   color:var(--muted);
   text-align:center;
 }
 
-/* ================= PDF ================= */
+/* ================= PRINT / PDF ================= */
 
 @media print{
   body{
-    display:block;
-    overflow:visible;
+    background:#fff !important;
+    color:#000 !important;
+  }
+
+  .no-print{
+    display:none !important;
+  }
+
+  .print-only{
+    display:block !important;
+  }
+
+  .cover{
+    page-break-after:always;
   }
 }
 
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:900px){
-  body{
-    overflow:auto;
-  }
-
   .grid{
     grid-template-columns:1fr;
   }
