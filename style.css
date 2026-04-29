@@ -8,8 +8,8 @@
   --accent2:#9c7c2c;
 
   --border:rgba(212,175,55,.18);
-  --shadow:0 15px 40px rgba(0,0,0,.6);
-  --radius:18px;
+  --shadow:0 12px 28px rgba(0,0,0,.55);
+  --radius:16px;
 
   --good:#3fbf7f;
   --warn:#e6b800;
@@ -35,7 +35,7 @@ body{
 .app{
   max-width:1200px;
   margin:0 auto;
-  padding:20px;
+  padding:18px;
   position:relative;
 }
 
@@ -51,10 +51,10 @@ body{
   font-weight:800;
   letter-spacing:-12px;
   font-family:serif;
-  color:rgba(212,175,55,.07);
+  color:rgba(212,175,55,.06);
   pointer-events:none;
   user-select:none;
-  z-index:5;
+  z-index:5; /* PREKO kartica */
 }
 
 /* ================= HEADER ================= */
@@ -63,13 +63,13 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
-  padding:18px;
+  padding:14px 16px;
 }
 
 h1{margin:0;font-size:22px}
 
 .sub{
-  margin-top:6px;
+  margin-top:4px;
   color:var(--muted);
   font-size:13px;
 }
@@ -84,15 +84,15 @@ h1{margin:0;font-size:22px}
 /* GOLD DIVIDER */
 .gold-divider{
   height:1px;
-  margin:0 18px 18px;
+  margin:0 16px 14px;
   background:linear-gradient(to right,transparent,var(--accent),transparent);
 }
 
 /* ================= BUTTONS ================= */
 
 .btn{
-  border-radius:14px;
-  padding:10px 16px;
+  border-radius:12px;
+  padding:8px 14px;
   font-weight:600;
   cursor:pointer;
   border:1px solid var(--border);
@@ -111,7 +111,7 @@ h1{margin:0;font-size:22px}
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:16px;
+  gap:14px;
 }
 
 /* ================= CARDS ================= */
@@ -120,15 +120,15 @@ h1{margin:0;font-size:22px}
   background:var(--card);
   border:1px solid var(--border);
   border-radius:var(--radius);
-  padding:16px;
+  padding:14px 14px 16px;
   box-shadow:var(--shadow);
   position:relative;
   z-index:10;
 }
 
 .card h2{
-  margin:0 0 12px;
-  font-size:16px;
+  margin:0 0 10px;
+  font-size:15px;
 }
 
 /* SUMMARY CARD */
@@ -141,13 +141,18 @@ h1{margin:0;font-size:22px}
 .form-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
+  gap:8px 10px;
+}
+
+/* LINIJSKI GRID (Soft / Rezerva / Marketing / Finansije) */
+.form-grid.single-line{
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
 }
 
 label{
   display:flex;
   flex-direction:column;
-  gap:6px;
+  gap:4px;
   font-size:12px;
   color:var(--muted);
 }
@@ -155,8 +160,8 @@ label{
 input{
   background:rgba(255,255,255,.06);
   border:1px solid var(--border);
-  border-radius:12px;
-  padding:10px;
+  border-radius:10px;
+  padding:8px 9px;
   color:var(--text);
 }
 
@@ -167,19 +172,23 @@ input:focus{
 
 /* ================= RESULTS ================= */
 
-.results{display:grid;gap:10px}
+.results{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px 10px;
+}
 
 .kpi{
   display:flex;
   justify-content:space-between;
   align-items:baseline;
   border:1px solid var(--border);
-  border-radius:14px;
-  padding:10px 12px;
+  border-radius:12px;
+  padding:8px 10px;
 }
 
 .k{color:var(--muted);font-size:12px}
-.v{font-family:var(--mono)}
+.v{font-family:var(--mono);font-size:13px}
 
 .kpi.good{border-color:var(--good);color:var(--good)}
 .kpi.warn{border-color:var(--warn);color:var(--warn)}
@@ -188,58 +197,15 @@ input:focus{
 /* ================= ASSUMPTIONS ================= */
 
 .assumptions{
-  margin-top:14px;
+  margin-top:10px;
   font-size:12px;
   color:var(--muted);
 }
 
-.assumptions h3{
-  margin:0 0 6px;
-  font-size:13px;
-  color:var(--text);
-}
-
-.assumptions ul{
-  margin:0;
-  padding-left:16px;
-}
-
-/* ================= TOOLTIP ================= */
-
-.label-with-tooltip{
-  display:flex;
-  flex-direction:column;
-  position:relative;
-}
-
-.tooltip-icon{
-  color:var(--accent);
-  cursor:pointer;
-  font-size:12px;
-  margin-bottom:4px;
-}
-
-.tooltip-text{
-  display:none;
-  position:absolute;
-  top:-6px;
-  left:0;
-  transform:translateY(-100%);
-  background:#111;
-  color:#fff;
-  padding:6px 8px;
-  border-radius:6px;
-  font-size:11px;
-  white-space:nowrap;
-  z-index:20;
-}
-
-.tooltip-icon:hover .tooltip-text{display:block}
-
 /* ================= FOOTER ================= */
 
 .footer{
-  margin-top:24px;
+  margin-top:20px;
   font-size:12px;
   color:var(--muted);
 }
@@ -254,7 +220,13 @@ input:focus{
 
 .cover h1{font-size:32px}
 .cover h2{margin-top:6px;font-size:18px;color:var(--muted)}
-.cover-meta{margin-top:40px;font-size:14px}
+.cover-meta{margin-top:36px;font-size:14px}
+
+/* ================= PAGE CONTROL ================= */
+
+.page-break{
+  page-break-after:always;
+}
 
 /* ================= PRINT / PDF ================= */
 
@@ -266,8 +238,7 @@ input:focus{
   }
 
   .no-print,
-  .header-actions,
-  .tooltip-icon{
+  .header-actions{
     display:none !important;
   }
 
@@ -280,17 +251,15 @@ input:focus{
     display:block;
   }
 
-  /* PAGE SPLIT: 2 + 2 CARDS */
-  .card:nth-of-type(3){
-    page-break-after:always;
-  }
-
+  /* NIKAD ne seci kartice */
   .card{
+    break-inside:avoid;
+    page-break-inside:avoid;
     background:#fff !important;
     color:#000 !important;
     border:1px solid #d4af37 !important;
     box-shadow:none !important;
-    margin-bottom:18px;
+    margin-bottom:16px;
   }
 
   .kpi{
@@ -315,4 +284,5 @@ input:focus{
 
 @media(max-width:900px){
   .grid{grid-template-columns:1fr}
+  .results{grid-template-columns:1fr}
 }
