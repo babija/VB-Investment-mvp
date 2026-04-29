@@ -66,6 +66,7 @@ body{
   z-index:1;
 }
 
+/* ✅ ISPRAVLJENO (ranije je bilo &gt;) */
 .app > *{
   position:relative;
   z-index:2;
@@ -276,14 +277,15 @@ input:focus{
     display:flex !important;
     flex-direction:column;
     align-items:center;
-    justify-content:center;
     text-align:center;
 
-    height:auto;                 /* ✅ nema prazne strane */
-    padding:0 !important;
+    justify-content:flex-start;   /* ✅ KLJUČ */
+    padding-top:40mm;             /* ✅ stabilna pozicija */
+
+    height:auto;
     margin:0 !important;
 
-    page-break-after:always;     /* ✅ tačno jedan break */
+    page-break-after:always;
   }
 
   /* PDF LOGO – GOLD + FADE */
@@ -318,14 +320,13 @@ input:focus{
   #pdfProjectName{
     display:block;
     margin:10px 0 6px;
-
     font-size:22px;
     font-weight:600;
     letter-spacing:0.4px;
     color:#000;
   }
 
-  /* ✅ GOLD LINE UNDER PROJECT NAME */
+  /* ✅ GOLD LINE */
   #pdfProjectName::after{
     content:"";
     display:block;
