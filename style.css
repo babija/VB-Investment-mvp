@@ -3,11 +3,14 @@
   --card:rgba(15,15,15,.85);
   --text:#f5f2eb;
   --muted:#b9a37a;
+
   --accent:#d4af37;
   --accent2:#9c7c2c;
-  --border:rgba(212,175,55,.25);
+
+  --border:rgba(212,175,55,.18); /* suptilniji gold */
   --shadow:0 15px 40px rgba(0,0,0,.6);
   --radius:18px;
+
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
@@ -23,7 +26,14 @@ body{
   color:var(--text);
 }
 
-.app{max-width:1200px;margin:0 auto;padding:20px}
+.app{
+  max-width:1200px;
+  margin:0 auto;
+  padding:20px;
+  position:relative;
+}
+
+/* ================= HEADER ================= */
 
 .header{
   display:flex;
@@ -32,6 +42,22 @@ body{
   padding:18px;
 }
 
+h1{margin:0;font-size:22px}
+
+.sub{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.pill{
+  padding:2px 8px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  font-size:12px;
+}
+
+/* GOLD DIVIDER */
 .gold-divider{
   height:1px;
   margin:0 18px 18px;
@@ -43,16 +69,7 @@ body{
   );
 }
 
-h1{margin:0;font-size:22px}
-
-.sub{margin-top:6px;color:var(--muted);font-size:13px}
-
-.pill{
-  padding:2px 8px;
-  border:1px solid var(--border);
-  border-radius:999px;
-  font-size:12px;
-}
+/* ================= BUTTONS ================= */
 
 .btn{
   border-radius:14px;
@@ -60,18 +77,25 @@ h1{margin:0;font-size:22px}
   font-weight:600;
   cursor:pointer;
   border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
 }
 
 .btn-primary{
   background: linear-gradient(135deg, #e6c45c, #b8962e);
   color:#1a1405;
+  border:1px solid rgba(212,175,55,.45);
 }
+
+/* ================= LAYOUT ================= */
 
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:16px;
 }
+
+/* ================= CARDS ================= */
 
 .card{
   background:var(--card);
@@ -81,7 +105,12 @@ h1{margin:0;font-size:22px}
   box-shadow:var(--shadow);
 }
 
-.card h2{margin:0 0 12px;font-size:16px}
+.card h2{
+  margin:0 0 12px;
+  font-size:16px;
+}
+
+/* ================= FORMS ================= */
 
 .form-grid{
   display:grid;
@@ -105,7 +134,12 @@ input{
   color:var(--text);
 }
 
-input:focus{border-color:var(--accent)}
+input:focus{
+  border-color:var(--accent);
+  outline:none;
+}
+
+/* ================= RESULTS ================= */
 
 .results{display:grid;gap:10px}
 
@@ -120,24 +154,41 @@ input:focus{border-color:var(--accent)}
 .k{color:var(--muted);font-size:12px}
 .v{font-family:var(--mono)}
 
-.label-with-tooltip{display:flex;flex-direction:column}
+/* ================= TOOLTIP ================= */
+
+.label-with-tooltip{
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
 
 .tooltip-icon{
   color:var(--accent);
   cursor:pointer;
   font-size:12px;
+  margin-bottom:4px;
 }
 
 .tooltip-text{
   display:none;
   position:absolute;
+  top:-6px;
+  left:0;
+  transform:translateY(-100%);
   background:#111;
   color:#fff;
   padding:6px 8px;
   border-radius:6px;
+  font-size:11px;
+  white-space:nowrap;
+  z-index:10;
 }
 
-.tooltip-icon:hover .tooltip-text{display:block}
+.tooltip-icon:hover .tooltip-text{
+  display:block;
+}
+
+/* ================= FOOTER ================= */
 
 .footer{
   margin-top:24px;
@@ -145,31 +196,73 @@ input:focus{border-color:var(--accent)}
   color:var(--muted);
 }
 
+/* ================= WATERMARK ================= */
+
+.app::before{
+  content:"VB";
+  position:fixed;
+  bottom:40px;
+  right:60px;
+  font-size:220px;
+  font-weight:800;
+  letter-spacing:-10px;
+  font-family:serif;
+  color:rgba(212,175,55,0.045);
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+}
+
+.app > *{
+  position:relative;
+  z-index:1;
+}
+
+/* ================= PRINT / PDF ================= */
+
+@media print{
+
+  body{
+    background:#fff !important;
+    color:#000 !important;
+  }
+
+  .header-actions,
+  .tooltip-icon{
+    display:none !important;
+  }
+
+  .gold-divider{
+    background:#d4af37 !important;
+  }
+
+  .card{
+    background:#fff !important;
+    color:#000 !important;
+    border:1px solid #d4af37 !important;
+    box-shadow:none !important;
+  }
+
+  .kpi{
+    border:1px solid #ccc !important;
+  }
+
+  input{
+    border:1px solid #ccc !important;
+    color:#000 !important;
+  }
+
+  .app::before{
+    color:rgba(212,175,55,0.08) !important;
+  }
+
+  @page{
+    margin:18mm;
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+
 @media(max-width:900px){
   .grid{grid-template-columns:1fr}
 }
-/* ===== VB WATERMARK ===== */
-
-.app::before{
-  content: "VB";
-  position: fixed;
-  bottom: 40px;
-  right: 60px;
-
-  font-size: 220px;
-  font-weight: 800;
-  letter-spacing: -10px;
-
-  color: rgba(212,175,55,0.05); /* gold, vrlo diskretno */
-  font-family: serif;
-
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-}
-/* sve iznad watermarka */
-.app > *{
-  position: relative;
-  z-index: 1;
-}
-
