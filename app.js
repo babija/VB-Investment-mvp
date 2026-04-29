@@ -1,4 +1,4 @@
-// VB Invest Calc Lite – FINAL (stabilizovan)
+// VB Invest Calc Lite – FINAL
 // Cash-flow, KPI, assumptions, project meta, PDF export
 
 const DEFAULTS = {
@@ -39,7 +39,7 @@ function money(x) {
   }).format(x);
 }
 
-function num(x, d = 4) {
+function num(x, d = 2) {
   if (!Number.isFinite(x)) return "—";
   return x.toFixed(d);
 }
@@ -192,35 +192,22 @@ function breakEvenPrice(p) {
   return (lo + hi) / 2;
 }
 
-/* ================= KPI SIGNALS ================= */
-
-function setKpiSignal(node, type) {
-  if (!node) return;
-  node.classList.remove("good", "warn", "bad");
-  node.classList.add(type);
-}
-
 /* ================= RENDER ================= */
 
 function render(sim, be, p) {
   if (el("kpiRevenue")) el("kpiRevenue").textContent = money(sim.revenue);
   if (el("kpiCostsNoInterest")) el("kpiCostsNoInterest").textContent = money(sim.costsNoInterest);
-  if (el("kpiInterest")) el("kpiInterest").textContent = money(sim.totalInterest);
   if (el("kpiPeakCredit")) el("kpiPeakCredit").textContent = money(sim.peakCredit);
-  if (el("kpiTax")) el("kpiTax").textContent = money(sim.tax);
   if (el("kpiNetProfit")) el("kpiNetProfit").textContent = money(sim.netProfit);
-  if (el("kpiRoi")) el("kpiRoi").textContent = num(sim.roi * 100, 2) + " %";
-  if (el("kpiBePrice")) el("kpiBePrice").textContent = `${be.toFixed(2)} €/m²`;
-
-  setKpiSignal(el("kpiRoi")?.closest(".kpi"), sim.roi > 0.2 ? "good" : sim.roi > 0.1 ? "warn" : "bad");
-  setKpiSignal(el("kpiNetProfit")?.closest(".kpi"), sim.netProfit > 0 ? "good" : "bad");
-  setKpiSignal(el("kpiPeakCredit")?.closest(".kpi"), "warn");
+  if (el("kpiRoi")) el("kpiRoi").textContent = num(sim.roi * 100) + " %";
+  if (el("kpiBePrice")) el("kpiBePrice").textContent = be.toFixed(2) + " €/m²";
 
   if (el("aSale")) el("aSale").textContent = p.salePricePerSqm;
   if (el("aCost")) el("aCost").textContent = p.constructionCostPerSqm;
   if (el("aInterest")) el("aInterest").textContent = (p.interestRateAnnual * 100).toFixed(2);
   if (el("aSales")) el("aSales").textContent = p.salesMonths;
 
+  // ✅ PDF META – UVEK SE SETUJE
   if (el("pdfProjectName") && el("projectName")) {
     el("pdfProjectName").textContent = el("projectName").value || "—";
   }
@@ -239,13 +226,21 @@ function calc() {
 }
 
 function init() {
-  if (el("btnCalc")) el("btnCalc").onclick = calc;
+  if (el("btnCalc")) {
+    el("btnCalc").onclick = calc;
+  }
 
   if (el("btnPdf")) {
     el("btnPdf").onclick = () => {
+
+      // ✅ KLJUČNO: uvek osveži podatke PRE PDF-a
+      calc();
+
       if (el("printDate")) {
-        el("printDate").textContent = new Date().toLocaleDateString("sr-RS");
+        el("printDate").textContent =
+          new Date().toLocaleDateString("sr-RS");
       }
+
       const oldTitle = document.title;
       document.title = "VB_Invest_Summary";
       window.print();
