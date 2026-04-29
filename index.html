@@ -4,140 +4,107 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VB Invest Calc Lite</title>
-
-  <link rel="stylesheet" href="style.css?v=1.2">
+  <link rel="stylesheet" href="style.css?v=2.0">
 </head>
 
 <body>
-  <div class="app">
+<div class="app">
 
-    <header class="header">
-      <div>
-        <h1>VB Invest Calc Lite</h1>
-        <p class="sub">
-          Investicioni kalkulator za
-          <span class="pill">banke</span> →
-          <span class="pill">investitore</span>
-        </p>
+  <!-- ===== PDF COVER ===== -->
+  <section class="cover print-only">
+    <h1>VB Invest Calc Lite</h1>
+    <h2>Investment Summary</h2>
+    <p class="cover-meta">
+      Project: ___________________________<br>
+      Location: __________________________<br>
+      Date: <span id="printDate"></span>
+    </p>
+  </section>
+
+  <header class="header no-print">
+    <div>
+      <h1>VB Invest Calc Lite</h1>
+      <p class="sub">
+        Investicioni kalkulator za
+        <span class="pill">banke</span> →
+        <span class="pill">investitore</span>
+      </p>
+    </div>
+    <div class="header-actions">
+      <button id="btnCalc" class="btn btn-primary">Izračunaj</button>
+      <button id="btnPdf" class="btn">Export PDF</button>
+    </div>
+  </header>
+
+  <div class="gold-divider"></div>
+
+  <main class="grid">
+
+    <!-- ===== SUMMARY FIRST (PDF) ===== -->
+    <section class="card summary-card">
+      <h2>📊 Summary</h2>
+      <div class="results">
+        <div class="kpi" id="kpiRevenueBox"><span class="k">Prihod</span><span class="v" id="kpiRevenue">—</span></div>
+        <div class="kpi" id="kpiNetBox"><span class="k">Neto dobit</span><span class="v" id="kpiNetProfit">—</span></div>
+        <div class="kpi" id="kpiRoiBox"><span class="k">ROI</span><span class="v" id="kpiRoi">—</span></div>
+        <div class="kpi" id="kpiPeakBox"><span class="k">Peak kredit</span><span class="v" id="kpiPeakCredit">—</span></div>
+        <div class="kpi"><span class="k">Break-even €/m²</span><span class="v" id="kpiBePrice">—</span></div>
       </div>
-      <div class="header-actions">
-        <button id="btnCalc" class="btn btn-primary" type="button">
-          Izračunaj
-        </button>
-        <button id="btnPdf" class="btn" type="button">
-          Export PDF
-        </button>
+
+      <div class="assumptions">
+        <h3>Key assumptions</h3>
+        <ul>
+          <li>Sale price: <span id="aSale">—</span> €/m²</li>
+          <li>Construction cost: <span id="aCost">—</span> €/m²</li>
+          <li>Interest: <span id="aInterest">—</span> %</li>
+          <li>Sales period: <span id="aSales">—</span> months</li>
+        </ul>
       </div>
-    </header>
+    </section>
 
-    <!-- GOLD DIVIDER -->
-    <div class="gold-divider"></div>
+    <!-- ===== INPUTS ===== -->
+    <section class="card">
+      <h2>📌 Osnovni parametri</h2>
+      <div class="form-grid">
+        <label>Model months<input id="modelMonths" type="number"></label>
+        <label>Construction months<input id="constructionMonths" type="number"></label>
+        <label>Sales months<input id="salesMonths" type="number"></label>
+        <label>Sellable area (m²)<input id="sellableArea" type="number"></label>
+        <label>Sale price (€/m²)<input id="salePricePerSqm" type="number"></label>
+      </div>
+    </section>
 
-    <main class="grid">
+    <section class="card">
+      <h2>🏗️ Costs</h2>
+      <div class="form-grid">
+        <label>Construction €/m²<input id="constructionCostPerSqm" type="number"></label>
+        <label>Soft cost %<input id="softCostPct" type="number"></label>
+        <label>Contingency %<input id="contingencyPct" type="number"></label>
+        <label>Land (EUR)<input id="landCost" type="number"></label>
+        <label>Permits (EUR)<input id="permitsCost" type="number"></label>
+        <label>Marketing %<input id="marketingPct" type="number"></label>
+      </div>
+    </section>
 
-      <section class="card">
-        <h2>📌 Osnovni parametri</h2>
-        <div class="form-grid">
-          <label>Start datum<input id="startDate" type="date"></label>
-          <label>Model (meseci)<input id="modelMonths" type="number"></label>
-          <label>Meseci gradnje<input id="constructionMonths" type="number"></label>
-          <label>Meseci prodaje<input id="salesMonths" type="number"></label>
-          <label>Prodajna površina (m²)<input id="sellableArea" type="number"></label>
-          <label>Cena prodaje (€/m²)<input id="salePricePerSqm" type="number"></label>
-        </div>
-      </section>
+    <section class="card">
+      <h2>🏦 Financing</h2>
+      <div class="form-grid">
+        <label>Equity<input id="equity" type="number"></label>
+        <label>Interest %<input id="interestRateAnnual" type="number"></label>
+        <label>Bank fee %<input id="bankFeePct" type="number"></label>
+        <label>Fee limit<input id="bankFeeBaseLimit" type="number"></label>
+        <label>Tax %<input id="corporateTaxPct" type="number"></label>
+      </div>
+    </section>
 
-      <section class="card">
-        <h2>🏗️ Troškovi</h2>
-        <div class="form-grid">
-          <label>Cena gradnje (€/m²)<input id="constructionCostPerSqm" type="number"></label>
+  </main>
 
-          <label class="label-with-tooltip">
-            Soft cost %
-            <span class="tooltip-icon">ⓘ
-              <span class="tooltip-text">Unesi ceo broj (npr. 12 = 12%)</span>
-            </span>
-            <input id="softCostPct" type="number">
-          </label>
+  <footer class="footer">
+    Model version v1.0 · Indicative calculation · Non-binding
+  </footer>
 
-          <label class="label-with-tooltip">
-            Rezerva %
-            <span class="tooltip-icon">ⓘ
-              <span class="tooltip-text">Unesi ceo broj (npr. 7 = 7%)</span>
-            </span>
-            <input id="contingencyPct" type="number">
-          </label>
+</div>
 
-          <label>Zemljište (EUR)<input id="landCost" type="number"></label>
-          <label>Dozvole (EUR)<input id="permitsCost" type="number"></label>
-
-          <label class="label-with-tooltip">
-            Marketing %
-            <span class="tooltip-icon">ⓘ
-              <span class="tooltip-text">Unesi ceo broj (npr. 2 = 2%)</span>
-            </span>
-            <input id="marketingPct" type="number">
-          </label>
-
-          <label>Dodatna rezerva (EUR)<input id="otherReserve" type="number"></label>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>🏦 Finansiranje</h2>
-        <div class="form-grid">
-          <label>Equity (EUR)<input id="equity" type="number"></label>
-
-          <label class="label-with-tooltip">
-            Kamatna stopa %
-            <span class="tooltip-icon">ⓘ
-              <span class="tooltip-text">Unesi ceo broj (npr. 7.5 = 7.5%)</span>
-            </span>
-            <input id="interestRateAnnual" type="number">
-          </label>
-
-          <label class="label-with-tooltip">
-            Bank fee %
-            <span class="tooltip-icon">ⓘ
-              <span class="tooltip-text">Unesi ceo broj (npr. 1 = 1%)</span>
-            </span>
-            <input id="bankFeePct" type="number">
-          </label>
-
-          <label>Fee limit (EUR)<input id="bankFeeBaseLimit" type="number"></label>
-
-          <label class="label-with-tooltip">
-            Porez %
-            <span class="tooltip-icon">ⓘ
-              <span class="tooltip-text">Unesi ceo broj (npr. 10 = 10%)</span>
-            </span>
-            <input id="corporateTaxPct" type="number">
-          </label>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>📊 Summary</h2>
-        <div class="results">
-          <div class="kpi"><span class="k">Prihod</span><span class="v" id="kpiRevenue">—</span></div>
-          <div class="kpi"><span class="k">Troškovi</span><span class="v" id="kpiCostsNoInterest">—</span></div>
-          <div class="kpi"><span class="k">Kamata</span><span class="v" id="kpiInterest">—</span></div>
-          <div class="kpi"><span class="k">Peak kredit</span><span class="v" id="kpiPeakCredit">—</span></div>
-          <div class="kpi"><span class="k">Porez</span><span class="v" id="kpiTax">—</span></div>
-          <div class="kpi"><span class="k">Neto dobit</span><span class="v" id="kpiNetProfit">—</span></div>
-          <div class="kpi"><span class="k">ROI</span><span class="v" id="kpiRoi">—</span></div>
-          <div class="kpi"><span class="k">Break-even</span><span class="v" id="kpiBePrice">—</span></div>
-        </div>
-      </section>
-
-    </main>
-
-    <footer class="footer">
-      VB Invest Calc Lite · MVP · GitHub Pages
-    </footer>
-
-  </div>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
