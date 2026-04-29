@@ -299,3 +299,28 @@ input:focus{
   .grid{grid-template-columns:1fr}
   .results{grid-template-columns:1fr}
 }
+/* ===== LOGO ===== */
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  height:46px;
+  width:auto;
+}
+
+.cover-logo{
+  width:150px;
+  display:block;
+  margin:0 auto 32px;
+}
+
+@media print{
+  .logo{
+    display:none;
+  }
+}
+
