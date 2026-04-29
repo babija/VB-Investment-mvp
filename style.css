@@ -5,16 +5,13 @@
   --muted:#b9a37a;
 
   --accent:#d4af37;
-  --accent2:#9c7c2c;
-
   --border:rgba(212,175,55,.18);
-  --shadow:0 12px 28px rgba(0,0,0,.55);
-  --radius:16px;
 
   --good:#3fbf7f;
   --warn:#e6b800;
   --bad:#e05555;
 
+  --radius:14px;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
@@ -35,26 +32,38 @@ body{
 .app{
   max-width:1200px;
   margin:0 auto;
-  padding:18px;
+  padding:16px;
   position:relative;
 }
 
 /* ================= WATERMARK ================= */
+/* PREKO TABLICA, ALI NE REMETI ČITLJIVOST */
 
-.app::before{
+.app::after{
   content:"VB";
   position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-family:serif;
   font-size:260px;
   font-weight:800;
   letter-spacing:-12px;
-  font-family:serif;
-  color:rgba(212,175,55,.06);
+
+  color:#d4af37;
+  opacity:0.06;
+
+  mix-blend-mode:multiply; /* KLJUČ */
   pointer-events:none;
-  user-select:none;
-  z-index:5; /* PREKO kartica */
+  z-index:2;
+}
+
+/* sav sadržaj iznad watermarka */
+.app > *{
+  position:relative;
+  z-index:3;
 }
 
 /* ================= HEADER ================= */
@@ -63,7 +72,7 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
-  padding:14px 16px;
+  padding:12px 14px;
 }
 
 h1{margin:0;font-size:22px}
@@ -84,14 +93,14 @@ h1{margin:0;font-size:22px}
 /* GOLD DIVIDER */
 .gold-divider{
   height:1px;
-  margin:0 16px 14px;
+  margin:0 14px 12px;
   background:linear-gradient(to right,transparent,var(--accent),transparent);
 }
 
 /* ================= BUTTONS ================= */
 
 .btn{
-  border-radius:12px;
+  border-radius:10px;
   padding:8px 14px;
   font-weight:600;
   cursor:pointer;
@@ -103,7 +112,6 @@ h1{margin:0;font-size:22px}
 .btn-primary{
   background:linear-gradient(135deg,#e6c45c,#b8962e);
   color:#1a1405;
-  border:1px solid rgba(212,175,55,.45);
 }
 
 /* ================= GRID ================= */
@@ -111,7 +119,7 @@ h1{margin:0;font-size:22px}
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:14px;
+  gap:12px;
 }
 
 /* ================= CARDS ================= */
@@ -120,18 +128,14 @@ h1{margin:0;font-size:22px}
   background:var(--card);
   border:1px solid var(--border);
   border-radius:var(--radius);
-  padding:14px 14px 16px;
-  box-shadow:var(--shadow);
-  position:relative;
-  z-index:10;
+  padding:12px 12px 14px;
 }
 
 .card h2{
-  margin:0 0 10px;
+  margin:0 0 8px;
   font-size:15px;
 }
 
-/* SUMMARY CARD */
 .summary-card{
   grid-column:1 / -1;
 }
@@ -141,18 +145,17 @@ h1{margin:0;font-size:22px}
 .form-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px 10px;
+  gap:6px 10px;
 }
 
-/* LINIJSKI GRID (Soft / Rezerva / Marketing / Finansije) */
 .form-grid.single-line{
-  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
 }
 
 label{
   display:flex;
   flex-direction:column;
-  gap:4px;
+  gap:3px;
   font-size:12px;
   color:var(--muted);
 }
@@ -160,14 +163,9 @@ label{
 input{
   background:rgba(255,255,255,.06);
   border:1px solid var(--border);
-  border-radius:10px;
-  padding:8px 9px;
+  border-radius:8px;
+  padding:7px 8px;
   color:var(--text);
-}
-
-input:focus{
-  border-color:var(--accent);
-  outline:none;
 }
 
 /* ================= RESULTS ================= */
@@ -175,7 +173,7 @@ input:focus{
 .results{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px 10px;
+  gap:6px 10px;
 }
 
 .kpi{
@@ -183,8 +181,8 @@ input:focus{
   justify-content:space-between;
   align-items:baseline;
   border:1px solid var(--border);
-  border-radius:12px;
-  padding:8px 10px;
+  border-radius:10px;
+  padding:7px 9px;
 }
 
 .k{color:var(--muted);font-size:12px}
@@ -197,7 +195,7 @@ input:focus{
 /* ================= ASSUMPTIONS ================= */
 
 .assumptions{
-  margin-top:10px;
+  margin-top:8px;
   font-size:12px;
   color:var(--muted);
 }
@@ -205,7 +203,7 @@ input:focus{
 /* ================= FOOTER ================= */
 
 .footer{
-  margin-top:20px;
+  margin-top:16px;
   font-size:12px;
   color:var(--muted);
 }
@@ -215,18 +213,12 @@ input:focus{
 .cover{
   display:none;
   text-align:center;
-  padding-top:120px;
+  padding-top:140px;
 }
 
-.cover h1{font-size:32px}
-.cover h2{margin-top:6px;font-size:18px;color:var(--muted)}
-.cover-meta{margin-top:36px;font-size:14px}
-
-/* ================= PAGE CONTROL ================= */
-
-.page-break{
-  page-break-after:always;
-}
+.cover h1{font-size:34px}
+.cover h2{margin-top:8px;font-size:18px;color:#666}
+.cover-meta{margin-top:40px;font-size:14px}
 
 /* ================= PRINT / PDF ================= */
 
@@ -238,17 +230,21 @@ input:focus{
   }
 
   .no-print,
-  .header-actions{
+  .header-actions,
+  .gold-divider{
     display:none !important;
   }
 
-  .print-only,
+  /* COVER = 1 STRANA */
   .cover{
     display:block !important;
+    page-break-after:always;
   }
 
+  /* SVE OSTALO = 1 STRANA */
   .grid{
     display:block;
+    page-break-after:avoid;
   }
 
   /* NIKAD ne seci kartice */
@@ -258,8 +254,7 @@ input:focus{
     background:#fff !important;
     color:#000 !important;
     border:1px solid #d4af37 !important;
-    box-shadow:none !important;
-    margin-bottom:16px;
+    margin-bottom:10px;
   }
 
   .kpi{
@@ -271,8 +266,9 @@ input:focus{
     color:#000 !important;
   }
 
-  .app::before{
-    color:rgba(212,175,55,.10) !important;
+  /* watermark jači u PDF-u, ali i dalje čitljiv */
+  .app::after{
+    opacity:0.08 !important;
   }
 
   @page{
