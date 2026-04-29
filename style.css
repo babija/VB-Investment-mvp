@@ -84,7 +84,7 @@ body{
 }
 
 .logo{
-  height:64px;                   /* ✅ veći logo na sajtu */
+  height:80px;                   /* ✅ veći logo na sajtu */
   width:auto;
   filter:
     drop-shadow(0 2px 10px rgba(212,175,55,.35))
