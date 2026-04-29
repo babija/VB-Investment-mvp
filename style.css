@@ -284,3 +284,53 @@ input:focus{
     grid-template-columns:1fr;
   }
 }
+/* =========================================================
+   PATCH – PDF LOGO FINAL POLISH
+   ========================================================= */
+
+@media print{
+
+  /* Sakrij web logo u PDF-u */
+  .logo{
+    display:none !important;
+  }
+
+  /* PDF cover – centriran sadržaj */
+  .cover{
+    display:flex !important;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+
+  /* ✅ PDF LOGO – kontrolisana veličina + fade */
+  .cover img{
+    width:140px;                 /* razumna veličina */
+    max-width:40%;
+    margin:0 auto 32px;
+
+    opacity:0.6;                 /* ✅ 60% transparentno */
+
+    /* ✅ FEJDOVANE IVICE */
+    -webkit-mask-image: radial-gradient(
+      circle,
+      rgba(0,0,0,1) 55%,
+      rgba(0,0,0,0.6) 70%,
+      rgba(0,0,0,0) 85%
+    );
+    mask-image: radial-gradient(
+      circle,
+      rgba(0,0,0,1) 55%,
+      rgba(0,0,0,0.6) 70%,
+      rgba(0,0,0,0) 85%
+    );
+
+    /* dodatni “paper” feel */
+    filter:
+      grayscale(100%)
+      contrast(95%)
+      brightness(105%);
+  }
+
+}
