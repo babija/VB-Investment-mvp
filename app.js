@@ -1,5 +1,5 @@
-// VB Invest Calc Lite – MVP
-// Početna strana prazna, nema reset-a, PDF export (print)
+// VB Invest Calc Lite – FINAL
+// Summary-first, KPI signals, assumptions binding, PDF export
 
 const DEFAULTS = {
   startDate: "2027-01-04",
@@ -28,6 +28,7 @@ const DEFAULTS = {
 const SALES_PCTS_6 = [0.10, 0.15, 0.20, 0.20, 0.20, 0.15];
 const el = (id) => document.getElementById(id);
 
+/* ===== FORMAT ===== */
 function money(x) {
   if (!Number.isFinite(x)) return "—";
   return new Intl.NumberFormat("sr-RS", {
@@ -36,12 +37,12 @@ function money(x) {
     maximumFractionDigits: 2,
   }).format(x);
 }
-
 function num(x, d = 4) {
   if (!Number.isFinite(x)) return "—";
   return x.toFixed(d);
 }
 
+/* ===== INPUTS ===== */
 function isPctField(k) {
   return [
     "softCostPct",
@@ -70,12 +71,15 @@ function readInputs() {
   return obj;
 }
 
+/* ===== TOTALS ===== */
 function derivedTotals(p) {
   const revenue = p.sellableArea * p.salePricePerSqm;
+
   const hard = p.sellableArea * p.constructionCostPerSqm;
   const soft = hard * p.softCostPct;
   const contingency = hard * p.contingencyPct;
   const marketing = revenue * p.marketingPct;
+
   const bankFee = p.bankFeePct * p.bankFeeBaseLimit;
 
   const costsNoInterest =
@@ -91,6 +95,7 @@ function derivedTotals(p) {
   return { revenue, hard, soft, contingency, marketing, bankFee, costsNoInterest };
 }
 
+/* ===== CASHFLOW SIM ===== */
 function runSimulation(p) {
   const t = derivedTotals(p);
 
@@ -168,9 +173,11 @@ function runSimulation(p) {
   return { ...t, totalInterest, peakCredit, profitBeforeTax, tax, netProfit, roi };
 }
 
+/* ===== BREAK EVEN ===== */
 function breakEvenPrice(p) {
   let lo = 0;
   let hi = Math.max(5000, p.salePricePerSqm * 3);
+
   const f = (price) =>
     runSimulation({ ...p, salePricePerSqm: price }).netProfit;
 
@@ -184,22 +191,50 @@ function breakEvenPrice(p) {
   return (lo + hi) / 2;
 }
 
-function render(sim, be) {
+/* ===== KPI SIGNALS ===== */
+function setKpiSignal(elKpi, type) {
+  elKpi.classList.remove("good", "warn", "bad");
+  elKpi.classList.add(type);
+}
+
+/* ===== RENDER ===== */
+function render(sim, be, p) {
   el("kpiRevenue").textContent = money(sim.revenue);
   el("kpiCostsNoInterest").textContent = money(sim.costsNoInterest);
   el("kpiInterest").textContent = money(sim.totalInterest);
   el("kpiPeakCredit").textContent = money(sim.peakCredit);
   el("kpiTax").textContent = money(sim.tax);
   el("kpiNetProfit").textContent = money(sim.netProfit);
-  el("kpiRoi").textContent = num(sim.roi, 6);
+  el("kpiRoi").textContent = num(sim.roi, 4);
   el("kpiBePrice").textContent = `${be.toFixed(2)} €/m²`;
+
+  /* KPI coloring */
+  const roiBox = el("kpiRoi").closest(".kpi");
+  const netBox = el("kpiNetProfit").closest(".kpi");
+  const peakBox = el("kpiPeakCredit").closest(".kpi");
+
+  if (sim.roi > 0.2) setKpiSignal(roiBox, "good");
+  else if (sim.roi > 0.1) setKpiSignal(roiBox, "warn");
+  else setKpiSignal(roiBox, "bad");
+
+  if (sim.netProfit > 0) setKpiSignal(netBox, "good");
+  else setKpiSignal(netBox, "bad");
+
+  setKpiSignal(peakBox, "warn");
+
+  /* Assumptions */
+  if (el("aSale")) el("aSale").textContent = p.salePricePerSqm;
+  if (el("aCost")) el("aCost").textContent = p.constructionCostPerSqm;
+  if (el("aInterest")) el("aInterest").textContent = (p.interestRateAnnual * 100).toFixed(2);
+  if (el("aSales")) el("aSales").textContent = p.salesMonths;
 }
 
+/* ===== MAIN ===== */
 function calc() {
   const p = readInputs();
   const sim = runSimulation(p);
   const be = breakEvenPrice(p);
-  render(sim, be);
+  render(sim, be, p);
 }
 
 function init() {
@@ -207,9 +242,16 @@ function init() {
 
   const btnPdf = el("btnPdf");
   if (btnPdf) {
-    btnPdf.onclick = () => window.print();
+    btnPdf.onclick = () => {
+      if (el("printDate")) {
+        el("printDate").textContent = new Date().toLocaleDateString("sr-RS");
+      }
+      const oldTitle = document.title;
+      document.title = "VB_Invest_Summary";
+      window.print();
+      document.title = oldTitle;
+    };
   }
 }
 
 init();
-``
