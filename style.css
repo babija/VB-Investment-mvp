@@ -30,9 +30,9 @@ body{
 }
 
 .app{
-  max-width:1200px;
+  max-width:1080px;   /* ✅ UŽE, PROFESIONALNIJE */
   margin:0 auto;
-  padding:16px;
+  padding:16px 20px;  /* malo više bočnog vazduha */
   position:relative;
 }
 
