@@ -5,54 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VB Invest Calc Lite</title>
 
-  <link rel="stylesheet" href="style.css?v=3.5">
+  <link rel="stylesheet" href="style.css?v=3.6">
 </head>
 
 <body>
 <div class="app">
 
   <!-- ================= PDF COVER (PRINT ONLY) ================= -->
-<section class="cover print-only">
-  <img src="vb-logo.png" class="cover-logo" alt="VB Residence logo">
+  <section class="cover print-only">
+    <img src="vb-logo.png" class="cover-logo" alt="VB Residence logo">
 
-<h1 id="pdfProjectName">—</h1>
-<h2 class="pdf-subtitle">VB Invest Calc Lite</h2>
+    <!-- PRVA LINIJA: IME PROJEKTA -->
+    <h1 id="pdfProjectName">—</h1>
 
+    <!-- DRUGA LINIJA: LOKACIJA -->
+    <div id="pdfLocation" class="pdf-location">—</div>
+
+    <!-- DATUM -->
     <div class="cover-meta">
-      <p><strong>Location:</strong> <span id="pdfLocation">—</span></p>
-      <p><strong>Date:</strong> <span id="printDate"></span></p>
+      <div id="printDate"></div>
     </div>
   </section>
-  <!-- ================= HEADER (WEB) ================= -->
- <header class="header no-print"><header class  <div class="header-left">
-    <img src="vb-logo.png" class="logo" alt="VB Residence logo">
 
-    <div class="header-text">
-      <h1>VB Invest Calc Lite</h1>
-      <p class="sub">
-        Investicioni kalkulator za
-        <span class="pill">banke</span> →
-        <span class="pill">investitore</span>
-      </p>
+  <!-- ================= HEADER (WEB ONLY) ================= -->
+  <header class="header no-print">
+    <div class="header-left">
+      <img src="vb-logo.png" class="logo" alt="VB Residence logo">
+
+      <div class="header-text">
+        <h1>VB Invest Calc Lite</h1>
+        <p class="sub">
+          Investicioni kalkulator za
+          <span class="pill">banke</span> →
+          <span class="pill">investitore</span>
+        </p>
+      </div>
     </div>
-  </div>
 
-  <div class="header-actions">
-    <button id="btnCalc" class="btn btn-primary" type="button">
-      Izračunaj
-    </button>
-    <button id="btnPdf" class="btn" type="button">
-      Export PDF
-    </button>
-  </div>
-</header>
+    <div class="header-actions">
+      <button id="btnCalc" class="btn btn-primary" type="button">
+        Izračunaj
+      </button>
+      <button id="btnPdf" class="btn" type="button">
+        Export PDF
+      </button>
+    </div>
+  </header>
+
   <!-- ================= GOLD DIVIDER ================= -->
   <div class="gold-divider"></div>
 
   <!-- ================= MAIN ================= -->
   <main class="grid">
 
-    <!-- ================= PROJECT ================= -->
+    <!-- ================= PROJEKAT ================= -->
     <section class="card">
       <h2>📝 Projekat</h2>
       <div class="form-grid single-line">
@@ -140,3 +146,4 @@
 <script src="app.js"></script>
 </body>
 </html>
+``
