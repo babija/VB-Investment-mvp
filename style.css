@@ -54,8 +54,8 @@ body{
 
   color:#d4af37;
   opacity:0.06;
+  mix-blend-mode:multiply;
 
-  mix-blend-mode:multiply; /* KLJUČ */
   pointer-events:none;
   z-index:2;
 }
@@ -90,11 +90,18 @@ h1{margin:0;font-size:22px}
   font-size:12px;
 }
 
-/* GOLD DIVIDER */
+/* ================= GOLD DIVIDER (VRAĆEN I OSIGURAN) ================= */
+
 .gold-divider{
   height:1px;
   margin:0 14px 12px;
-  background:linear-gradient(to right,transparent,var(--accent),transparent);
+  background:linear-gradient(
+    to right,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  opacity:0.9;
 }
 
 /* ================= BUTTONS ================= */
@@ -168,6 +175,11 @@ input{
   color:var(--text);
 }
 
+input:focus{
+  border-color:var(--accent);
+  outline:none;
+}
+
 /* ================= RESULTS ================= */
 
 .results{
@@ -230,9 +242,14 @@ input{
   }
 
   .no-print,
-  .header-actions,
-  .gold-divider{
+  .header-actions{
     display:none !important;
+  }
+
+  /* GOLD DIVIDER U PDF‑U (OSTAJE) */
+  .gold-divider{
+    display:block !important;
+    background:#d4af37 !important;
   }
 
   /* COVER = 1 STRANA */
@@ -266,7 +283,7 @@ input{
     color:#000 !important;
   }
 
-  /* watermark jači u PDF-u, ali i dalje čitljiv */
+  /* watermark jači u PDF‑u, ali čitljiv */
   .app::after{
     opacity:0.08 !important;
   }
