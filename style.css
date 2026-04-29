@@ -1,6 +1,6 @@
 :root{
   --bg:#050505;
-  --card:rgba(15,15,15,.85);
+  --card:rgba(15,15,15,.88);
   --text:#f5f2eb;
   --muted:#b9a37a;
 
@@ -11,14 +11,20 @@
   --shadow:0 15px 40px rgba(0,0,0,.6);
   --radius:18px;
 
+  --good:#3fbf7f;
+  --warn:#e6b800;
+  --bad:#e05555;
+
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 *{box-sizing:border-box}
 
+/* ================= BASE ================= */
+
 body{
   margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
   background:
     radial-gradient(700px 500px at 20% 10%, rgba(212,175,55,.10), transparent 60%),
     radial-gradient(700px 500px at 80% 40%, rgba(212,175,55,.06), transparent 60%),
@@ -31,6 +37,24 @@ body{
   margin:0 auto;
   padding:20px;
   position:relative;
+}
+
+/* ================= WATERMARK ================= */
+
+.app::before{
+  content:"VB";
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:260px;
+  font-weight:800;
+  letter-spacing:-12px;
+  font-family:serif;
+  color:rgba(212,175,55,.07);
+  pointer-events:none;
+  user-select:none;
+  z-index:5;
 }
 
 /* ================= HEADER ================= */
@@ -61,12 +85,7 @@ h1{margin:0;font-size:22px}
 .gold-divider{
   height:1px;
   margin:0 18px 18px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--accent),
-    transparent
-  );
+  background:linear-gradient(to right,transparent,var(--accent),transparent);
 }
 
 /* ================= BUTTONS ================= */
@@ -82,7 +101,7 @@ h1{margin:0;font-size:22px}
 }
 
 .btn-primary{
-  background: linear-gradient(135deg, #e6c45c, #b8962e);
+  background:linear-gradient(135deg,#e6c45c,#b8962e);
   color:#1a1405;
   border:1px solid rgba(212,175,55,.45);
 }
@@ -104,12 +123,17 @@ h1{margin:0;font-size:22px}
   padding:16px;
   box-shadow:var(--shadow);
   position:relative;
-  z-index:1;
+  z-index:10;
 }
 
 .card h2{
   margin:0 0 12px;
   font-size:16px;
+}
+
+/* SUMMARY CARD */
+.summary-card{
+  grid-column:1 / -1;
 }
 
 /* ================= FORMS ================= */
@@ -148,6 +172,7 @@ input:focus{
 .kpi{
   display:flex;
   justify-content:space-between;
+  align-items:baseline;
   border:1px solid var(--border);
   border-radius:14px;
   padding:10px 12px;
@@ -155,6 +180,29 @@ input:focus{
 
 .k{color:var(--muted);font-size:12px}
 .v{font-family:var(--mono)}
+
+.kpi.good{border-color:var(--good);color:var(--good)}
+.kpi.warn{border-color:var(--warn);color:var(--warn)}
+.kpi.bad{border-color:var(--bad);color:var(--bad)}
+
+/* ================= ASSUMPTIONS ================= */
+
+.assumptions{
+  margin-top:14px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.assumptions h3{
+  margin:0 0 6px;
+  font-size:13px;
+  color:var(--text);
+}
+
+.assumptions ul{
+  margin:0;
+  padding-left:16px;
+}
 
 /* ================= TOOLTIP ================= */
 
@@ -186,9 +234,7 @@ input:focus{
   z-index:20;
 }
 
-.tooltip-icon:hover .tooltip-text{
-  display:block;
-}
+.tooltip-icon:hover .tooltip-text{display:block}
 
 /* ================= FOOTER ================= */
 
@@ -198,25 +244,17 @@ input:focus{
   color:var(--muted);
 }
 
-/* ================= WATERMARK (OVER CARDS) ================= */
+/* ================= COVER (PDF) ================= */
 
-.app::before{
-  content:"VB";
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-
-  font-size:260px;
-  font-weight:800;
-  letter-spacing:-12px;
-  font-family:serif;
-
-  color:rgba(212,175,55,0.07); /* dovoljno vidljivo, ali čitljivo */
-  pointer-events:none;
-  user-select:none;
-  z-index:5; /* IZNAD kartica */
+.cover{
+  display:none;
+  text-align:center;
+  padding-top:120px;
 }
+
+.cover h1{font-size:32px}
+.cover h2{margin-top:6px;font-size:18px;color:var(--muted)}
+.cover-meta{margin-top:40px;font-size:14px}
 
 /* ================= PRINT / PDF ================= */
 
@@ -227,25 +265,26 @@ input:focus{
     color:#000 !important;
   }
 
+  .no-print,
   .header-actions,
   .tooltip-icon{
     display:none !important;
   }
 
-  .gold-divider{
-    background:#d4af37 !important;
+  .print-only,
+  .cover{
+    display:block !important;
   }
 
   .grid{
     display:block;
   }
 
-  /* PRVA 2 PROZORA – PRVA STRANA */
-  .card:nth-of-type(2){
-    page-break-after: always;
+  /* PAGE SPLIT: 2 + 2 CARDS */
+  .card:nth-of-type(3){
+    page-break-after:always;
   }
 
-  /* DRUGA 2 PROZORA – DRUGA STRANA */
   .card{
     background:#fff !important;
     color:#000 !important;
@@ -264,7 +303,7 @@ input:focus{
   }
 
   .app::before{
-    color:rgba(212,175,55,0.10) !important; /* watermark jači u PDF-u */
+    color:rgba(212,175,55,.10) !important;
   }
 
   @page{
