@@ -1,5 +1,5 @@
-// VB Invest Calc Lite – FINAL
-// Summary-first, KPI signals, assumptions binding, PDF export
+// VB Invest Calc Lite – FINAL (stabilizovan)
+// Cash-flow, KPI, assumptions, project meta, PDF export
 
 const DEFAULTS = {
   startDate: "2027-01-04",
@@ -28,7 +28,8 @@ const DEFAULTS = {
 const SALES_PCTS_6 = [0.10, 0.15, 0.20, 0.20, 0.20, 0.15];
 const el = (id) => document.getElementById(id);
 
-/* ===== FORMAT ===== */
+/* ================= FORMAT ================= */
+
 function money(x) {
   if (!Number.isFinite(x)) return "—";
   return new Intl.NumberFormat("sr-RS", {
@@ -37,12 +38,14 @@ function money(x) {
     maximumFractionDigits: 2,
   }).format(x);
 }
+
 function num(x, d = 4) {
   if (!Number.isFinite(x)) return "—";
   return x.toFixed(d);
 }
 
-/* ===== INPUTS ===== */
+/* ================= INPUTS ================= */
+
 function isPctField(k) {
   return [
     "softCostPct",
@@ -60,18 +63,15 @@ function readInputs() {
     const n = el(k);
     if (!n) continue;
 
-    if (n.type === "date") {
-      obj[k] = n.value;
-    } else {
-      let v = Number(n.value);
-      if (isPctField(k)) v = v / 100;
-      obj[k] = v;
-    }
+    let v = Number(n.value);
+    if (isPctField(k)) v = v / 100;
+    obj[k] = Number.isFinite(v) ? v : 0;
   }
   return obj;
 }
 
-/* ===== TOTALS ===== */
+/* ================= TOTALS ================= */
+
 function derivedTotals(p) {
   const revenue = p.sellableArea * p.salePricePerSqm;
 
@@ -79,7 +79,6 @@ function derivedTotals(p) {
   const soft = hard * p.softCostPct;
   const contingency = hard * p.contingencyPct;
   const marketing = revenue * p.marketingPct;
-
   const bankFee = p.bankFeePct * p.bankFeeBaseLimit;
 
   const costsNoInterest =
@@ -95,7 +94,8 @@ function derivedTotals(p) {
   return { revenue, hard, soft, contingency, marketing, bankFee, costsNoInterest };
 }
 
-/* ===== CASHFLOW SIM ===== */
+/* ================= CASHFLOW ================= */
+
 function runSimulation(p) {
   const t = derivedTotals(p);
 
@@ -168,12 +168,13 @@ function runSimulation(p) {
   const profitBeforeTax = t.revenue - t.costsNoInterest - totalInterest;
   const tax = Math.max(0, profitBeforeTax * p.corporateTaxPct);
   const netProfit = profitBeforeTax - tax;
-  const roi = p.equity > 0 ? netProfit / p.equity : NaN;
+  const roi = p.equity > 0 ? netProfit / p.equity : 0;
 
   return { ...t, totalInterest, peakCredit, profitBeforeTax, tax, netProfit, roi };
 }
 
-/* ===== BREAK EVEN ===== */
+/* ================= BREAK EVEN ================= */
+
 function breakEvenPrice(p) {
   let lo = 0;
   let hi = Math.max(5000, p.salePricePerSqm * 3);
@@ -191,45 +192,45 @@ function breakEvenPrice(p) {
   return (lo + hi) / 2;
 }
 
-/* ===== KPI SIGNALS ===== */
-function setKpiSignal(elKpi, type) {
-  elKpi.classList.remove("good", "warn", "bad");
-  elKpi.classList.add(type);
+/* ================= KPI SIGNALS ================= */
+
+function setKpiSignal(node, type) {
+  if (!node) return;
+  node.classList.remove("good", "warn", "bad");
+  node.classList.add(type);
 }
 
-/* ===== RENDER ===== */
+/* ================= RENDER ================= */
+
 function render(sim, be, p) {
-  el("kpiRevenue").textContent = money(sim.revenue);
-  el("kpiCostsNoInterest").textContent = money(sim.costsNoInterest);
-  el("kpiInterest").textContent = money(sim.totalInterest);
-  el("kpiPeakCredit").textContent = money(sim.peakCredit);
-  el("kpiTax").textContent = money(sim.tax);
-  el("kpiNetProfit").textContent = money(sim.netProfit);
-  el("kpiRoi").textContent = num(sim.roi, 4);
-  el("kpiBePrice").textContent = `${be.toFixed(2)} €/m²`;
+  if (el("kpiRevenue")) el("kpiRevenue").textContent = money(sim.revenue);
+  if (el("kpiCostsNoInterest")) el("kpiCostsNoInterest").textContent = money(sim.costsNoInterest);
+  if (el("kpiInterest")) el("kpiInterest").textContent = money(sim.totalInterest);
+  if (el("kpiPeakCredit")) el("kpiPeakCredit").textContent = money(sim.peakCredit);
+  if (el("kpiTax")) el("kpiTax").textContent = money(sim.tax);
+  if (el("kpiNetProfit")) el("kpiNetProfit").textContent = money(sim.netProfit);
+  if (el("kpiRoi")) el("kpiRoi").textContent = num(sim.roi * 100, 2) + " %";
+  if (el("kpiBePrice")) el("kpiBePrice").textContent = `${be.toFixed(2)} €/m²`;
 
-  /* KPI coloring */
-  const roiBox = el("kpiRoi").closest(".kpi");
-  const netBox = el("kpiNetProfit").closest(".kpi");
-  const peakBox = el("kpiPeakCredit").closest(".kpi");
+  setKpiSignal(el("kpiRoi")?.closest(".kpi"), sim.roi > 0.2 ? "good" : sim.roi > 0.1 ? "warn" : "bad");
+  setKpiSignal(el("kpiNetProfit")?.closest(".kpi"), sim.netProfit > 0 ? "good" : "bad");
+  setKpiSignal(el("kpiPeakCredit")?.closest(".kpi"), "warn");
 
-  if (sim.roi > 0.2) setKpiSignal(roiBox, "good");
-  else if (sim.roi > 0.1) setKpiSignal(roiBox, "warn");
-  else setKpiSignal(roiBox, "bad");
-
-  if (sim.netProfit > 0) setKpiSignal(netBox, "good");
-  else setKpiSignal(netBox, "bad");
-
-  setKpiSignal(peakBox, "warn");
-
-  /* Assumptions */
   if (el("aSale")) el("aSale").textContent = p.salePricePerSqm;
   if (el("aCost")) el("aCost").textContent = p.constructionCostPerSqm;
   if (el("aInterest")) el("aInterest").textContent = (p.interestRateAnnual * 100).toFixed(2);
   if (el("aSales")) el("aSales").textContent = p.salesMonths;
+
+  if (el("pdfProjectName") && el("projectName")) {
+    el("pdfProjectName").textContent = el("projectName").value || "—";
+  }
+  if (el("pdfLocation") && el("projectLocation")) {
+    el("pdfLocation").textContent = el("projectLocation").value || "—";
+  }
 }
 
-/* ===== MAIN ===== */
+/* ================= MAIN ================= */
+
 function calc() {
   const p = readInputs();
   const sim = runSimulation(p);
@@ -238,11 +239,10 @@ function calc() {
 }
 
 function init() {
-  el("btnCalc").onclick = calc;
+  if (el("btnCalc")) el("btnCalc").onclick = calc;
 
-  const btnPdf = el("btnPdf");
-  if (btnPdf) {
-    btnPdf.onclick = () => {
+  if (el("btnPdf")) {
+    el("btnPdf").onclick = () => {
       if (el("printDate")) {
         el("printDate").textContent = new Date().toLocaleDateString("sr-RS");
       }
