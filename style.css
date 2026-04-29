@@ -7,7 +7,7 @@
   --accent:#d4af37;
   --accent2:#9c7c2c;
 
-  --border:rgba(212,175,55,.18); /* suptilniji gold */
+  --border:rgba(212,175,55,.18);
   --shadow:0 15px 40px rgba(0,0,0,.6);
   --radius:18px;
 
@@ -87,7 +87,7 @@ h1{margin:0;font-size:22px}
   border:1px solid rgba(212,175,55,.45);
 }
 
-/* ================= LAYOUT ================= */
+/* ================= GRID ================= */
 
 .grid{
   display:grid;
@@ -103,6 +103,8 @@ h1{margin:0;font-size:22px}
   border-radius:var(--radius);
   padding:16px;
   box-shadow:var(--shadow);
+  position:relative;
+  z-index:1;
 }
 
 .card h2{
@@ -181,7 +183,7 @@ input:focus{
   border-radius:6px;
   font-size:11px;
   white-space:nowrap;
-  z-index:10;
+  z-index:20;
 }
 
 .tooltip-icon:hover .tooltip-text{
@@ -196,26 +198,24 @@ input:focus{
   color:var(--muted);
 }
 
-/* ================= WATERMARK ================= */
+/* ================= WATERMARK (OVER CARDS) ================= */
 
 .app::before{
   content:"VB";
   position:fixed;
-  bottom:40px;
-  right:60px;
-  font-size:220px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+
+  font-size:260px;
   font-weight:800;
-  letter-spacing:-10px;
+  letter-spacing:-12px;
   font-family:serif;
-  color:rgba(212,175,55,0.045);
+
+  color:rgba(212,175,55,0.07); /* dovoljno vidljivo, ali čitljivo */
   pointer-events:none;
   user-select:none;
-  z-index:0;
-}
-
-.app > *{
-  position:relative;
-  z-index:1;
+  z-index:5; /* IZNAD kartica */
 }
 
 /* ================= PRINT / PDF ================= */
@@ -236,11 +236,22 @@ input:focus{
     background:#d4af37 !important;
   }
 
+  .grid{
+    display:block;
+  }
+
+  /* PRVA 2 PROZORA – PRVA STRANA */
+  .card:nth-of-type(2){
+    page-break-after: always;
+  }
+
+  /* DRUGA 2 PROZORA – DRUGA STRANA */
   .card{
     background:#fff !important;
     color:#000 !important;
     border:1px solid #d4af37 !important;
     box-shadow:none !important;
+    margin-bottom:18px;
   }
 
   .kpi{
@@ -253,7 +264,7 @@ input:focus{
   }
 
   .app::before{
-    color:rgba(212,175,55,0.08) !important;
+    color:rgba(212,175,55,0.10) !important; /* watermark jači u PDF-u */
   }
 
   @page{
