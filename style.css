@@ -1,17 +1,17 @@
 :root{
   --bg:#050505;
-  --card:rgba(15,15,15,.88);
+  --card:rgba(18,18,18,.9);
   --text:#f5f2eb;
   --muted:#b9a37a;
 
   --accent:#d4af37;
-  --border:rgba(212,175,55,.18);
+  --border:rgba(212,175,55,.22);
 
   --good:#3fbf7f;
   --warn:#e6b800;
   --bad:#e05555;
 
-  --radius:14px;
+  --radius:16px;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
@@ -23,21 +23,21 @@ body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
   background:
-    radial-gradient(700px 500px at 20% 10%, rgba(212,175,55,.10), transparent 60%),
-    radial-gradient(700px 500px at 80% 40%, rgba(212,175,55,.06), transparent 60%),
+    radial-gradient(900px 600px at 15% 10%, rgba(212,175,55,.10), transparent 60%),
+    radial-gradient(900px 600px at 85% 35%, rgba(212,175,55,.07), transparent 60%),
     var(--bg);
   color:var(--text);
 }
 
 .app{
-  max-width:1080px;   /* ✅ UŽE, PROFESIONALNIJE */
+  max-width:1040px;              /* ✔ još uže i premium */
   margin:0 auto;
-  padding:16px 20px;  /* malo više bočnog vazduha */
+  padding:18px 22px;
   position:relative;
 }
 
 /* ================= WATERMARK ================= */
-/* PREKO TABLICA, ALI NE REMETI ČITLJIVOST */
+/* Vidljiv, ali ne remeti čitanje */
 
 .app::after{
   content:"VB";
@@ -48,12 +48,12 @@ body{
   justify-content:center;
 
   font-family:serif;
-  font-size:260px;
+  font-size:280px;
   font-weight:800;
-  letter-spacing:-12px;
+  letter-spacing:-14px;
 
   color:#d4af37;
-  opacity:0.06;
+  opacity:0.055;
   mix-blend-mode:multiply;
 
   pointer-events:none;
@@ -71,11 +71,29 @@ body{
 .header{
   display:flex;
   justify-content:space-between;
-  align-items:flex-start;
-  padding:12px 14px;
+  align-items:center;
+  padding:14px 10px 10px;
 }
 
-h1{margin:0;font-size:22px}
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.logo{
+  height:64px;                   /* ✅ veći logo na sajtu */
+  width:auto;
+  filter:
+    drop-shadow(0 2px 10px rgba(212,175,55,.35))
+    drop-shadow(0 0 18px rgba(212,175,55,.15));
+}
+
+.header-text h1{
+  margin:0;
+  font-size:23px;
+  letter-spacing:.2px;
+}
 
 .sub{
   margin-top:4px;
@@ -84,31 +102,32 @@ h1{margin:0;font-size:22px}
 }
 
 .pill{
-  padding:2px 8px;
+  padding:2px 9px;
   border:1px solid var(--border);
   border-radius:999px;
   font-size:12px;
 }
 
-/* ================= GOLD DIVIDER (VRAĆEN I OSIGURAN) ================= */
+/* ================= GOLD DIVIDER ================= */
 
 .gold-divider{
   height:1px;
-  margin:0 14px 12px;
+  margin:10px auto 18px;
+  max-width:1040px;
   background:linear-gradient(
     to right,
     transparent,
     var(--accent),
     transparent
   );
-  opacity:0.9;
+  opacity:.85;
 }
 
 /* ================= BUTTONS ================= */
 
 .btn{
-  border-radius:10px;
-  padding:8px 14px;
+  border-radius:12px;
+  padding:8px 16px;
   font-weight:600;
   cursor:pointer;
   border:1px solid var(--border);
@@ -126,7 +145,7 @@ h1{margin:0;font-size:22px}
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
+  gap:14px;
 }
 
 /* ================= CARDS ================= */
@@ -135,12 +154,13 @@ h1{margin:0;font-size:22px}
   background:var(--card);
   border:1px solid var(--border);
   border-radius:var(--radius);
-  padding:12px 12px 14px;
+  padding:14px 14px 16px;
 }
 
 .card h2{
-  margin:0 0 8px;
+  margin:0 0 10px;
   font-size:15px;
+  letter-spacing:.2px;
 }
 
 .summary-card{
@@ -152,26 +172,26 @@ h1{margin:0;font-size:22px}
 .form-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:6px 10px;
+  gap:7px 12px;
 }
 
 .form-grid.single-line{
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
 }
 
 label{
   display:flex;
   flex-direction:column;
-  gap:3px;
+  gap:4px;
   font-size:12px;
   color:var(--muted);
 }
 
 input{
-  background:rgba(255,255,255,.06);
+  background:rgba(255,255,255,.07);
   border:1px solid var(--border);
-  border-radius:8px;
-  padding:7px 8px;
+  border-radius:10px;
+  padding:8px 9px;
   color:var(--text);
 }
 
@@ -185,7 +205,7 @@ input:focus{
 .results{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:6px 10px;
+  gap:8px 12px;
 }
 
 .kpi{
@@ -193,12 +213,19 @@ input:focus{
   justify-content:space-between;
   align-items:baseline;
   border:1px solid var(--border);
-  border-radius:10px;
-  padding:7px 9px;
+  border-radius:12px;
+  padding:8px 11px;
 }
 
-.k{color:var(--muted);font-size:12px}
-.v{font-family:var(--mono);font-size:13px}
+.k{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.v{
+  font-family:var(--mono);
+  font-size:13px;
+}
 
 .kpi.good{border-color:var(--good);color:var(--good)}
 .kpi.warn{border-color:var(--warn);color:var(--warn)}
@@ -207,7 +234,7 @@ input:focus{
 /* ================= ASSUMPTIONS ================= */
 
 .assumptions{
-  margin-top:8px;
+  margin-top:10px;
   font-size:12px;
   color:var(--muted);
 }
@@ -215,7 +242,7 @@ input:focus{
 /* ================= FOOTER ================= */
 
 .footer{
-  margin-top:16px;
+  margin-top:20px;
   font-size:12px;
   color:var(--muted);
 }
@@ -228,9 +255,22 @@ input:focus{
   padding-top:140px;
 }
 
+.cover img{
+  width:170px;
+  margin-bottom:42px;
+
+  /* ✅ FEJDOVANE IVICE */
+  opacity:.65;
+  filter:
+    grayscale(100%)
+    contrast(95%)
+    brightness(108%)
+    blur(.3px);
+}
+
 .cover h1{font-size:34px}
 .cover h2{margin-top:8px;font-size:18px;color:#666}
-.cover-meta{margin-top:40px;font-size:14px}
+.cover-meta{margin-top:44px;font-size:14px}
 
 /* ================= PRINT / PDF ================= */
 
@@ -246,32 +286,22 @@ input:focus{
     display:none !important;
   }
 
-  /* GOLD DIVIDER U PDF‑U (OSTAJE) */
-  .gold-divider{
-    display:block !important;
-    background:#d4af37 !important;
-  }
-
-  /* COVER = 1 STRANA */
   .cover{
     display:block !important;
     page-break-after:always;
   }
 
-  /* SVE OSTALO = 1 STRANA */
   .grid{
     display:block;
-    page-break-after:avoid;
   }
 
-  /* NIKAD ne seci kartice */
   .card{
     break-inside:avoid;
     page-break-inside:avoid;
     background:#fff !important;
     color:#000 !important;
     border:1px solid #d4af37 !important;
-    margin-bottom:10px;
+    margin-bottom:12px;
   }
 
   .kpi{
@@ -283,7 +313,6 @@ input:focus{
     color:#000 !important;
   }
 
-  /* watermark jači u PDF‑u, ali čitljiv */
   .app::after{
     opacity:0.08 !important;
   }
@@ -299,28 +328,4 @@ input:focus{
   .grid{grid-template-columns:1fr}
   .results{grid-template-columns:1fr}
 }
-/* ===== LOGO ===== */
-
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.logo{
-  height:46px;
-  width:auto;
-}
-
-.cover-logo{
-  width:150px;
-  display:block;
-  margin:0 auto 32px;
-}
-
-@media print{
-  .logo{
-    display:none;
-  }
-}
-
+``
