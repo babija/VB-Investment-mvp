@@ -148,3 +148,28 @@ input:focus{border-color:var(--accent)}
 @media(max-width:900px){
   .grid{grid-template-columns:1fr}
 }
+/* ===== VB WATERMARK ===== */
+
+.app::before{
+  content: "VB";
+  position: fixed;
+  bottom: 40px;
+  right: 60px;
+
+  font-size: 220px;
+  font-weight: 800;
+  letter-spacing: -10px;
+
+  color: rgba(212,175,55,0.05); /* gold, vrlo diskretno */
+  font-family: serif;
+
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+/* sve iznad watermarka */
+.app > *{
+  position: relative;
+  z-index: 1;
+}
+
