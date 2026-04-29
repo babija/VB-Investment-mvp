@@ -30,10 +30,12 @@ body{
 }
 
 .app{
-  max-width:1040px;              /* ✔ još uže i premium */
+  max-width:200mm;        /* ✅ A4 feel na webu */
   margin:0 auto;
-  padding:18px 22px;
+  padding:18mm 16mm;      /* ✅ kao margine dokumenta */
   position:relative;
+}
+``
 }
 
 /* ================= WATERMARK ================= */
